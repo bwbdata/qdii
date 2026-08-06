@@ -19,7 +19,7 @@ jobs:
       - name: 检查公开数据文件
         run: node -e "JSON.parse(require('node:fs').readFileSync('web/public/data/latest.json', 'utf8'))"
       - name: 发布到 Cloudflare Pages
-        run: npx wrangler@4 pages deploy web/public --project-name "$CF_PAGES_PROJECT"
+        run: npx wrangler@4 pages deploy web/public --project-name "qdii"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

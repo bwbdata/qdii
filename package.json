@@ -26,6 +26,6 @@
     "build:web-data": "node scripts/build-web-data.js"
   },
   "dependencies": {
-    "pdfjs-dist": "4.8.69"
+    "pdfjs-dist": "6.2.108"
   }
 }

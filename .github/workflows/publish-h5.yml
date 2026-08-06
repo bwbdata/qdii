@@ -23,7 +23,9 @@ jobs:
           node-version: 22
           package-manager-cache: false
       - run: npm ci --omit=optional --ignore-scripts
-      - run: node scripts/query-purchase-limits.js --output-dir .qdii-purchase-limits
+      - name: 查询最新限额
+        run: node scripts/query-purchase-limits.js --output-dir .qdii-purchase-limits
+        continue-on-error: true
       - run: node scripts/build-web-data.js --input .qdii-purchase-limits/latest.json --output web/public/data/latest.json
       - name: 提交最新公开数据
         shell: bash

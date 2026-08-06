@@ -204,7 +204,7 @@ webhook 地址不应写入仓库、Skill 文件或 LaunchAgent plist。
 - Secret `CLOUDFLARE_ACCOUNT_ID`：Cloudflare 账户 ID。
 - Variable `CF_PAGES_PROJECT`：Pages 项目名。也可将同名值保存为 Secret。
 
-之后在 Actions 手动运行一次“更新并发布 H5”。工作流每天北京时间 09:10、14:30、20:30 更新；若查询不完整，脚本会失败且不会提交或发布新数据。数据无变化时不会创建空提交。
+之后在 Actions 手动运行一次“更新并发布 H5”。工作流每天北京时间 09:10、14:30、20:30 更新。若查询不完整，H5 仍会发布已核验的部分结果，并在页面明确提示数据不完整；暂未确认项目不会进入限额清单。数据无变化时不会创建空提交。
 
 本地生成页面数据：
 

@@ -22,7 +22,8 @@
     "node": ">=22"
   },
   "scripts": {
-    "test": "node scripts/check-release.js"
+    "test": "node scripts/check-release.js",
+    "build:web-data": "node scripts/build-web-data.js"
   },
   "dependencies": {
     "pdfjs-dist": "4.8.69"

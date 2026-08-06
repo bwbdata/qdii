@@ -194,6 +194,27 @@ security add-generic-password -U \
 
 webhook 地址不应写入仓库、Skill 文件或 LaunchAgent plist。
 
+## H5 页面与 Cloudflare Pages
+
+无需拆分仓库。`web/public/` 是静态 H5；GitHub Actions 运行现有查询脚本，生成脱敏的 `data/latest.json`，并将页面和数据一起发布到 Cloudflare Pages。浏览器不会直接抓取基金网站或公告。
+
+首次在 Cloudflare Pages 创建项目（不必连接 Git），然后在 GitHub 仓库 Settings → Secrets and variables → Actions 设置：
+
+- Secret `CLOUDFLARE_API_TOKEN`：具备该 Pages 项目 Edit 权限的 API Token。
+- Secret `CLOUDFLARE_ACCOUNT_ID`：Cloudflare 账户 ID。
+- Variable `CF_PAGES_PROJECT`：Pages 项目名。
+
+之后在 Actions 手动运行一次“更新并发布 H5”。工作流每天北京时间 09:10、14:30、20:30 更新；若查询不完整，脚本会失败且不会发布新页面。
+
+本地生成页面数据：
+
+```bash
+node scripts/query-purchase-limits.js --output-dir .qdii-purchase-limits
+npm run build:web-data -- --input .qdii-purchase-limits/latest.json
+```
+
+请用任意静态 HTTP 服务预览 `web/public/`，不要直接双击 `index.html`。
+
 ## 环境与隐私
 
 - Node.js 22 或更高版本。

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "completedAt": "2026-08-06T11:33:02.263Z",
+  "completedAt": "2026-08-06T15:17:11.186Z",
   "timezone": "Asia/Shanghai",
   "selection": {
     "index": "all",
@@ -9,9 +9,9 @@
   },
   "health": {
     "status": "degraded",
-    "checked": 48,
+    "checked": 46,
     "expected": 57,
-    "coverage": 0.8421052631578947
+    "coverage": 0.8070175438596491
   },
   "rows": [
     {
@@ -431,7 +431,7 @@
       "route": "otc",
       "status": "limited",
       "limitAmount": 10,
-      "decisionStatus": "limited",
+      "decisionStatus": "unknown",
       "decisionLimitAmount": 10
     },
     {
@@ -445,7 +445,7 @@
       "route": "otc",
       "status": "limited",
       "limitAmount": 10,
-      "decisionStatus": "limited",
+      "decisionStatus": "unknown",
       "decisionLimitAmount": 10
     },
     {

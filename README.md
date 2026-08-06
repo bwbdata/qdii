@@ -202,7 +202,7 @@ webhook 地址不应写入仓库、Skill 文件或 LaunchAgent plist。
 
 - Secret `CLOUDFLARE_API_TOKEN`：具备该 Pages 项目 Edit 权限的 API Token。
 - Secret `CLOUDFLARE_ACCOUNT_ID`：Cloudflare 账户 ID。
-- Variable `CF_PAGES_PROJECT`：Pages 项目名。
+- Variable `CF_PAGES_PROJECT`：Pages 项目名。也可将同名值保存为 Secret。
 
 之后在 Actions 手动运行一次“更新并发布 H5”。工作流每天北京时间 09:10、14:30、20:30 更新；若查询不完整，脚本会失败且不会发布新页面。
 

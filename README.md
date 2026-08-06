@@ -194,19 +194,19 @@ security add-generic-password -U \
 
 webhook 地址不应写入仓库、Skill 文件或 LaunchAgent plist。
 
-## H5 页面与 Cloudflare Pages
+## H5 页面与 Cloudflare Workers
 
-无需拆分仓库。`web/public/` 是静态 H5；GitHub Actions 运行现有查询脚本，生成脱敏的 `data/latest.json`，自动提交该 JSON 到仓库，并将页面和数据一起发布到 Cloudflare Pages。浏览器不会直接抓取基金网站或公告。
+无需拆分仓库。`web/public/` 是静态 H5；GitHub Actions 运行现有查询脚本，生成脱敏的 `data/latest.json`，自动提交该 JSON 到仓库，并将页面和数据一起发布到 Cloudflare Worker 静态资源。浏览器不会直接抓取基金网站或公告。
 
-首次在 Cloudflare Pages 创建项目（不必连接 Git），然后在 GitHub 仓库 Settings → Secrets and variables → Actions 设置：
+首次在 Cloudflare Workers 创建静态资源 Worker（不必连接 Git），然后在 GitHub 仓库 Settings → Secrets and variables → Actions 设置：
 
-- Secret `CLOUDFLARE_API_TOKEN`：具备该 Pages 项目 Edit 权限的 API Token。
+- Secret `CLOUDFLARE_API_TOKEN`：具备 `Account → Workers Scripts → Edit` 权限的 API Token。
 - Secret `CLOUDFLARE_ACCOUNT_ID`：Cloudflare 账户 ID。
-- Variable `CF_PAGES_PROJECT`：Pages 项目名。也可将同名值保存为 Secret。
+- Variable `CF_WORKER_NAME`：Worker 名称，例如 `qdii`。也可将同名值保存为 Secret。
 
 之后在 Actions 手动运行一次“更新并发布 H5”。工作流每天北京时间 09:10、14:30、20:30 更新，最长运行 30 分钟。若查询不完整，H5 仍会发布已核验的部分结果，并在页面明确提示数据不完整；暂未确认项目不会进入限额清单。数据无变化时不会创建空提交。
 
-如果已经手动更新并提交了 `web/public/data/latest.json`，可在 Actions 中运行“手动发布 H5”。该工作流只校验 JSON 并发布现有 `web/public/`，不会重新查询或改写数据。
+如果已经手动更新并提交了 `web/public/data/latest.json`，可在 Actions 中运行“手动发布 H5”。该工作流只校验 JSON 并发布现有 `web/public/` 到 Worker，不会重新查询或改写数据。
 
 本地生成页面数据：
 

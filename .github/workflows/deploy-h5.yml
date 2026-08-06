@@ -18,9 +18,9 @@ jobs:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - name: 检查公开数据文件
         run: node -e "JSON.parse(require('node:fs').readFileSync('web/public/data/latest.json', 'utf8'))"
-      - name: 发布到 Cloudflare Pages
-        run: npx wrangler@4 pages deploy web/public --project-name "$CF_PAGES_PROJECT"
+      - name: 发布到 Cloudflare Worker
+        run: npx wrangler@4 deploy --assets web/public --name "$CF_WORKER_NAME" --compatibility-date 2026-08-06
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          CF_PAGES_PROJECT: ${{ vars.CF_PAGES_PROJECT || secrets.CF_PAGES_PROJECT }}
+          CF_WORKER_NAME: ${{ vars.CF_WORKER_NAME || secrets.CF_WORKER_NAME }}

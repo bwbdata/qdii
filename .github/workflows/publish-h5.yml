@@ -37,8 +37,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "chore: update QDII purchase-limit data"
           git push origin "HEAD:${GITHUB_REF_NAME}"
-      - run: npx wrangler@4 pages deploy web/public --project-name "$CF_PAGES_PROJECT"
+      - run: npx wrangler@4 deploy --assets web/public --name "$CF_WORKER_NAME" --compatibility-date 2026-08-06
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          CF_PAGES_PROJECT: ${{ vars.CF_PAGES_PROJECT || secrets.CF_PAGES_PROJECT }}
+          CF_WORKER_NAME: ${{ vars.CF_WORKER_NAME || secrets.CF_WORKER_NAME }}

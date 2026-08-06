@@ -196,7 +196,7 @@ webhook 地址不应写入仓库、Skill 文件或 LaunchAgent plist。
 
 ## H5 页面与 Cloudflare Pages
 
-无需拆分仓库。`web/public/` 是静态 H5；GitHub Actions 运行现有查询脚本，生成脱敏的 `data/latest.json`，并将页面和数据一起发布到 Cloudflare Pages。浏览器不会直接抓取基金网站或公告。
+无需拆分仓库。`web/public/` 是静态 H5；GitHub Actions 运行现有查询脚本，生成脱敏的 `data/latest.json`，自动提交该 JSON 到仓库，并将页面和数据一起发布到 Cloudflare Pages。浏览器不会直接抓取基金网站或公告。
 
 首次在 Cloudflare Pages 创建项目（不必连接 Git），然后在 GitHub 仓库 Settings → Secrets and variables → Actions 设置：
 
@@ -204,7 +204,7 @@ webhook 地址不应写入仓库、Skill 文件或 LaunchAgent plist。
 - Secret `CLOUDFLARE_ACCOUNT_ID`：Cloudflare 账户 ID。
 - Variable `CF_PAGES_PROJECT`：Pages 项目名。也可将同名值保存为 Secret。
 
-之后在 Actions 手动运行一次“更新并发布 H5”。工作流每天北京时间 09:10、14:30、20:30 更新；若查询不完整，脚本会失败且不会发布新页面。
+之后在 Actions 手动运行一次“更新并发布 H5”。工作流每天北京时间 09:10、14:30、20:30 更新；若查询不完整，脚本会失败且不会提交或发布新数据。数据无变化时不会创建空提交。
 
 本地生成页面数据：
 

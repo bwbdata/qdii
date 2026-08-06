@@ -3,6 +3,5 @@ node_modules/
 coverage/
 outputs/
 .qdii-purchase-limits/
-web/public/data/latest.json
 *.log
 *.tmp

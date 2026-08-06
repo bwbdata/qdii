@@ -7,7 +7,11 @@ on:
     - cron: "30 6 * * *"
     - cron: "30 12 * * *"
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: qdii-h5-publish
+  cancel-in-progress: false
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -21,6 +25,17 @@ jobs:
       - run: npm ci --omit=optional --ignore-scripts
       - run: node scripts/query-purchase-limits.js --output-dir .qdii-purchase-limits
       - run: node scripts/build-web-data.js --input .qdii-purchase-limits/latest.json --output web/public/data/latest.json
+      - name: 提交最新公开数据
+        shell: bash
+        run: |
+          git add web/public/data/latest.json
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: update QDII purchase-limit data"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
       - run: npx wrangler@4 pages deploy web/public --project-name "$CF_PAGES_PROJECT"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

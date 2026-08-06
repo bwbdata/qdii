@@ -1,5 +1,6 @@
 name: 更新并发布 H5
 on:
+  push:
   workflow_dispatch:
   schedule:
     - cron: "10 1 * * *"

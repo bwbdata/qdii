@@ -9,29 +9,22 @@
   </head>
   <body>
     <main class="shell">
-      <header class="hero">
-        <p class="eyebrow">QDII PURCHASE LIMITS</p>
-        <h1>QDII 申购限额</h1>
-        <p>纳斯达克 100、标普 500 相关基金</p>
-      </header>
-
       <section class="toolbar" aria-label="指数筛选和数据状态">
         <div class="tabs" role="tablist">
           <button class="tab active" data-index="all" role="tab">全部</button>
           <button class="tab" data-index="nasdaq100" role="tab">纳斯达克100</button>
           <button class="tab" data-index="sp500" role="tab">标普500</button>
         </div>
-        <button id="updated-at" class="updated-at" type="button" aria-expanded="false">正在加载数据…</button>
       </section>
 
-      <section id="data-status" class="data-status" hidden></section>
       <section id="fund-sections" class="fund-sections" aria-live="polite"></section>
       <footer>仅整理公开申购限制信息，不构成基金推荐或投资建议。</footer>
     </main>
 
     <template id="fund-section-template">
       <section class="fund-section">
-        <h2></h2>
+        <div class="section-header"><h2></h2><button class="updated-at" type="button" aria-expanded="false"></button></div>
+        <section class="data-status" hidden></section>
         <div class="channel">
           <div class="channel-heading"><h3>代销</h3><span class="count"></span></div>
           <div class="table-wrap sales-table"></div>

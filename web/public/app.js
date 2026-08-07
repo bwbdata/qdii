@@ -60,7 +60,18 @@ function render() {
     const unavailable = groupUnavailableRows(payload.rows.filter((row) => row.index === index && row.channelBucket !== "fund-manager-direct" && ["suspended", "unavailable"].includes(finalStatus(row))));
     const direct = groupRows(payload.officialChannelEvidence.filter((row) => row.index === index), (row) => row.amount);
     const section = document.querySelector("#fund-section-template").content.cloneNode(true);
+    const health = payload.health || {};
+    const updateButton = section.querySelector(".updated-at");
+    const statusPanel = section.querySelector(".data-status");
+    const time = new Intl.DateTimeFormat("zh-CN", { timeZone: payload.timezone || "Asia/Shanghai", dateStyle: "medium", timeStyle: "short", hourCycle: "h23" }).format(new Date(payload.completedAt));
     section.querySelector("h2").textContent = labels[index];
+    updateButton.textContent = `更新于 ${time}`;
+    statusPanel.innerHTML = `<strong>${safe(healthLabels[health.status] || "状态未知")}</strong><span>已核验 ${health.checked || 0}/${health.expected || 0}</span>${health.status !== "ok" ? "<p>暂未确认项目不会进入限额清单。</p>" : ""}`;
+    updateButton.addEventListener("click", () => {
+      const expanded = updateButton.getAttribute("aria-expanded") === "true";
+      updateButton.setAttribute("aria-expanded", String(!expanded));
+      statusPanel.hidden = expanded;
+    });
     section.querySelector(".count").textContent = `${sales.length} 只`;
     renderTable(section.querySelector(".sales-table"), sales.concat(unavailable));
     renderTable(section.querySelector(".direct-table"), direct);
@@ -71,26 +82,14 @@ function render() {
 }
 
 async function start() {
-  const updateButton = document.querySelector("#updated-at");
-  const statusPanel = document.querySelector("#data-status");
   try {
     payload = await fetch("./data/latest.json", { cache: "no-store" }).then((response) => {
       if (!response.ok) throw new Error("数据文件不可用");
       return response.json();
     });
   } catch {
-    updateButton.textContent = "暂未发布数据";
     return;
   }
-  const health = payload.health || {};
-  const time = new Intl.DateTimeFormat("zh-CN", { timeZone: payload.timezone || "Asia/Shanghai", dateStyle: "medium", timeStyle: "short", hourCycle: "h23" }).format(new Date(payload.completedAt));
-  updateButton.textContent = `更新于 ${time}`;
-  statusPanel.innerHTML = `<strong>${safe(healthLabels[health.status] || "状态未知")}</strong><span>已核验 ${health.checked || 0}/${health.expected || 0}</span>${health.status !== "ok" ? "<p>暂未确认项目不会进入限额清单。</p>" : ""}`;
-  updateButton.addEventListener("click", () => {
-    const expanded = updateButton.getAttribute("aria-expanded") === "true";
-    updateButton.setAttribute("aria-expanded", String(!expanded));
-    statusPanel.hidden = expanded;
-  });
   document.querySelectorAll(".tab").forEach((button) => button.addEventListener("click", () => {
     selected = button.dataset.index;
     document.querySelectorAll(".tab").forEach((item) => item.classList.toggle("active", item === button));

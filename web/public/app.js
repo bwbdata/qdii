@@ -2,7 +2,7 @@ const labels = { nasdaq100: "纳斯达克100", sp500: "标普500" };
 const healthLabels = { ok: "数据完整", partial: "数据部分完整", degraded: "数据不完整" };
 const statusLabels = { suspended: "暂停申购", unavailable: "暂不可申购" };
 let payload;
-let selected = "all";
+let selected = "nasdaq100";
 
 const safe = (value) => {
   const element = document.createElement("span");
@@ -55,7 +55,7 @@ function channelRows(index) {
   const sales = groupRows(payload.rows.filter((row) => row.index === index && row.channelBucket !== "fund-manager-direct" && ["open", "limited"].includes(finalStatus(row))));
   const unavailable = groupUnavailableRows(payload.rows.filter((row) => row.index === index && row.channelBucket !== "fund-manager-direct" && ["suspended", "unavailable"].includes(finalStatus(row))));
   const direct = groupRows(payload.officialChannelEvidence.filter((row) => row.index === index), (row) => row.amount);
-  return { sales: sales.concat(unavailable), direct };
+  return { sales, unavailable, direct };
 }
 
 function render() {
@@ -63,7 +63,7 @@ function render() {
   const root = document.querySelector("#fund-sections");
   root.innerHTML = "";
   indexes.forEach((index) => {
-    const { sales, direct } = channelRows(index);
+    const { sales, unavailable, direct } = channelRows(index);
     const section = document.querySelector("#fund-section-template").content.cloneNode(true);
     const health = payload.health || {};
     const updateButton = section.querySelector(".updated-at");
@@ -78,7 +78,7 @@ function render() {
       statusPanel.hidden = expanded;
     });
     section.querySelector(".count").textContent = `${sales.length} 只`;
-    renderTable(section.querySelector(".sales-table"), sales);
+    renderTable(section.querySelector(".sales-table"), sales.concat(unavailable));
     renderTable(section.querySelector(".direct-table"), direct);
     section.querySelector(".sales-empty").hidden = sales.length > 0;
     section.querySelector(".direct-empty").hidden = direct.length > 0;
@@ -218,7 +218,9 @@ function exportCurrentSelection() {
   indexes.forEach((index) => {
     const data = channelRows(index);
     ["sales", "direct"].forEach((channel) => {
-      const rows = data[channel];
+      const rows = channel === "sales"
+        ? data.sales.filter((row) => !row.displayStatus && ["open", "limited"].includes(finalStatus(row)))
+        : data.direct;
       if (!rows.length) return;
       const pages = paginateExportRows(rows);
       pages.forEach((pageRows, page) => {

@@ -200,7 +200,7 @@ webhook 地址不应写入仓库、Skill 文件或 LaunchAgent plist。
 
 首次在 Cloudflare Workers 创建静态资源 Worker（不必连接 Git），然后在 GitHub 仓库 Settings → Secrets and variables → Actions 设置：
 
-- Secret `CLOUDFLARE_API_TOKEN`：具备 `Account → Workers Scripts → Edit` 权限的 API Token。
+- Secret `CLOUDFLARE_API_TOKEN`：在 `My Profile → API Tokens` 创建的用户 Token。权限需要 `Account Settings → Read`、`Workers Scripts → Edit`、`Workers KV Storage → Edit`、`Workers R2 Storage → Edit`、`User Details → Read`、`Memberships → Read`；如该 Worker 使用自定义域名路由，再为对应 Zone 添加 `Workers Routes → Edit`。
 - Secret `CLOUDFLARE_ACCOUNT_ID`：Cloudflare 账户 ID。
 - Variable `CF_WORKER_NAME`：Worker 名称，例如 `qdii`。也可将同名值保存为 Secret。
 

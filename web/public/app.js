@@ -51,14 +51,19 @@ function groupUnavailableRows(rows) {
   return [...groups.values()].sort((left, right) => left.name.localeCompare(right.name, "zh-CN"));
 }
 
+function channelRows(index) {
+  const sales = groupRows(payload.rows.filter((row) => row.index === index && row.channelBucket !== "fund-manager-direct" && ["open", "limited"].includes(finalStatus(row))));
+  const unavailable = groupUnavailableRows(payload.rows.filter((row) => row.index === index && row.channelBucket !== "fund-manager-direct" && ["suspended", "unavailable"].includes(finalStatus(row))));
+  const direct = groupRows(payload.officialChannelEvidence.filter((row) => row.index === index), (row) => row.amount);
+  return { sales: sales.concat(unavailable), direct };
+}
+
 function render() {
   const indexes = selected === "all" ? ["nasdaq100", "sp500"] : [selected];
   const root = document.querySelector("#fund-sections");
   root.innerHTML = "";
   indexes.forEach((index) => {
-    const sales = groupRows(payload.rows.filter((row) => row.index === index && row.channelBucket !== "fund-manager-direct" && ["open", "limited"].includes(finalStatus(row))));
-    const unavailable = groupUnavailableRows(payload.rows.filter((row) => row.index === index && row.channelBucket !== "fund-manager-direct" && ["suspended", "unavailable"].includes(finalStatus(row))));
-    const direct = groupRows(payload.officialChannelEvidence.filter((row) => row.index === index), (row) => row.amount);
+    const { sales, direct } = channelRows(index);
     const section = document.querySelector("#fund-section-template").content.cloneNode(true);
     const health = payload.health || {};
     const updateButton = section.querySelector(".updated-at");
@@ -73,11 +78,154 @@ function render() {
       statusPanel.hidden = expanded;
     });
     section.querySelector(".count").textContent = `${sales.length} 只`;
-    renderTable(section.querySelector(".sales-table"), sales.concat(unavailable));
+    renderTable(section.querySelector(".sales-table"), sales);
     renderTable(section.querySelector(".direct-table"), direct);
     section.querySelector(".sales-empty").hidden = sales.length > 0;
     section.querySelector(".direct-empty").hidden = direct.length > 0;
     root.append(section);
+  });
+}
+
+function roundedRect(context, x, y, width, height, radius, fill) {
+  context.beginPath();
+  context.roundRect(x, y, width, height, radius);
+  context.fillStyle = fill;
+  context.fill();
+}
+
+function wrapText(context, value, maxWidth) {
+  const lines = [];
+  let line = "";
+  for (const character of String(value || "")) {
+    const next = line + character;
+    if (line && context.measureText(next).width > maxWidth) {
+      lines.push(line);
+      line = character;
+    } else line = next;
+  }
+  if (line) lines.push(line);
+  return lines.length ? lines : [""];
+}
+
+function measureExportRows(rows) {
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  const columnWidths = [150, 325, 175];
+  context.font = "24px 'PingFang SC', 'Microsoft YaHei', sans-serif";
+  return rows.map((row) => {
+    const first = row.displayStatus || displayAmount(row.amount, row.currency);
+    const second = `${row.name}${row.route === "exchange" ? "（场内交易）" : ""}`;
+    const columns = [first, second, row.codes.join("、")].map((value, column) => wrapText(context, value, columnWidths[column] - 24));
+    return { row, columns, height: Math.max(54, Math.max(...columns.map((lines) => lines.length)) * 31 + 22) };
+  });
+}
+
+function paginateExportRows(rows) {
+  const pageHeight = 1334;
+  const availableHeight = pageHeight - 168 - 48 - 58;
+  const pages = [];
+  let current = [];
+  let usedHeight = 0;
+  measureExportRows(rows).forEach((item) => {
+    if (current.length && usedHeight + item.height > availableHeight) {
+      pages.push(current.map((entry) => entry.row));
+      current = [];
+      usedHeight = 0;
+    }
+    current.push(item);
+    usedHeight += item.height;
+  });
+  if (current.length) pages.push(current.map((entry) => entry.row));
+  return pages;
+}
+
+function renderExportPage(index, channel, rows, page, pages) {
+  const width = 750;
+  const height = 1334;
+  const padding = 38;
+  const columnWidths = [150, 325, 175];
+  const channelName = channel === "sales" ? "代销" : "直销";
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  context.font = "24px 'PingFang SC', 'Microsoft YaHei', sans-serif";
+  const measured = measureExportRows(rows);
+  const measuredRows = measured.map((item) => item.columns);
+  const rowHeights = measured.map((item) => item.height);
+  const headerHeight = 168;
+  const tableHeaderHeight = 48;
+  canvas.width = width * 2;
+  canvas.height = height * 2;
+  context.scale(2, 2);
+  context.fillStyle = "#f4f7f6";
+  context.fillRect(0, 0, width, height);
+  roundedRect(context, padding, 24, width - padding * 2, height - 48, 24, "#ffffff");
+  roundedRect(context, padding, 24, width - padding * 2, 126, 24, "#0d2b3e");
+  context.fillStyle = "#71d7bf";
+  context.font = "bold 16px 'PingFang SC', 'Microsoft YaHei', sans-serif";
+  context.fillText("QDII PURCHASE LIMITS", padding + 25, 59);
+  context.fillStyle = "#ffffff";
+  context.font = "bold 30px 'PingFang SC', 'Microsoft YaHei', sans-serif";
+  context.fillText(`${labels[index]}｜${channelName}`, padding + 25, 101);
+  context.fillStyle = "#c8dfdf";
+  context.font = "18px 'PingFang SC', 'Microsoft YaHei', sans-serif";
+  context.fillText(`更新于 ${new Intl.DateTimeFormat("zh-CN", { timeZone: payload.timezone || "Asia/Shanghai", dateStyle: "medium", timeStyle: "short", hourCycle: "h23" }).format(new Date(payload.completedAt))}`, padding + 25, 133);
+  let y = headerHeight;
+  const x = padding;
+  context.fillStyle = "#f3f8f6";
+  context.fillRect(x, y, width - padding * 2, tableHeaderHeight);
+  context.fillStyle = "#637887";
+  context.font = "bold 17px 'PingFang SC', 'Microsoft YaHei', sans-serif";
+  ["限额", "基金", "代码"].forEach((label, column) => context.fillText(label, x + columnWidths.slice(0, column).reduce((sum, item) => sum + item, 0) + 12, y + 30));
+  y += tableHeaderHeight;
+  measuredRows.forEach((columns, rowIndex) => {
+    const height = rowHeights[rowIndex];
+    const row = rows[rowIndex];
+    if (row.displayStatus) context.fillStyle = "#fffaf3";
+    else context.fillStyle = "#ffffff";
+    context.fillRect(x, y, width - padding * 2, height);
+    context.strokeStyle = "#dce7e7";
+    context.beginPath();
+    context.moveTo(x, y + height);
+    context.lineTo(width - padding, y + height);
+    context.stroke();
+    columns.forEach((lines, column) => {
+      context.fillStyle = column === 0 ? (row.displayStatus ? "#b76723" : "#009b73") : column === 2 ? "#6c7d88" : "#102d3c";
+      context.font = `${column === 0 || column === 1 ? "bold " : ""}18px 'PingFang SC', 'Microsoft YaHei', sans-serif`;
+      const cellX = x + columnWidths.slice(0, column).reduce((sum, item) => sum + item, 0) + 12;
+      lines.forEach((line, lineIndex) => context.fillText(line, cellX, y + 29 + lineIndex * 31));
+    });
+    y += height;
+  });
+  context.fillStyle = "#8a9a9f";
+  context.font = "16px 'PingFang SC', 'Microsoft YaHei', sans-serif";
+  context.fillText(`第 ${page}/${pages} 页 · 仅供信息查询，不构成投资建议`, padding + 16, height - 22);
+  return canvas;
+}
+
+function downloadCanvas(canvas, filename) {
+  canvas.toBlob((blob) => {
+    if (!blob) return;
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+  }, "image/png");
+}
+
+function exportCurrentSelection() {
+  const indexes = selected === "all" ? ["nasdaq100", "sp500"] : [selected];
+  indexes.forEach((index) => {
+    const data = channelRows(index);
+    ["sales", "direct"].forEach((channel) => {
+      const rows = data[channel];
+      if (!rows.length) return;
+      const pages = paginateExportRows(rows);
+      pages.forEach((pageRows, page) => {
+        const canvas = renderExportPage(index, channel, pageRows, page + 1, pages.length);
+        downloadCanvas(canvas, `${labels[index]}-${channel === "sales" ? "代销" : "直销"}-${page + 1}.png`);
+      });
+    });
   });
 }
 
@@ -95,6 +243,7 @@ async function start() {
     document.querySelectorAll(".tab").forEach((item) => item.classList.toggle("active", item === button));
     render();
   }));
+  document.querySelector("#export-current").addEventListener("click", exportCurrentSelection);
   render();
 }
 

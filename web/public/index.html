@@ -1,5 +1,49 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#0d2b3e"><title>QDII 申购限额</title><link rel="stylesheet" href="./styles.css"></head>
-<body><main class="shell"><header class="hero"><p class="eyebrow">QDII PURCHASE LIMITS</p><h1>申购限额，一眼看清</h1><p class="subtitle">整理纳斯达克 100 与标普 500 相关基金的公开申购限制信息。</p><div class="meta"><span id="updated-at">正在加载数据…</span><span id="health-badge" class="badge">—</span></div></header>
-<section class="controls"><div class="tabs"><button class="tab active" data-index="all">全部</button><button class="tab" data-index="nasdaq100">纳斯达克 100</button><button class="tab" data-index="sp500">标普 500</button></div><label class="search">⌕ <input id="search" type="search" placeholder="搜索基金名称或代码"></label></section><p id="data-warning" class="warning" hidden></p><section id="fund-sections" class="fund-sections"></section><section id="changes" class="changes" hidden><h2>本次变化</h2><div id="change-list"></div></section><footer>仅整理公开申购限制信息，不构成基金推荐或投资建议。最终状态以实际销售渠道及基金公司公告为准。</footer></main>
-<template id="fund-section-template"><section class="fund-section"><div class="section-title"><div><p class="eyebrow">代销渠道</p><h2></h2></div><span class="count"></span></div><div class="cards"></div><p class="empty" hidden>暂无确认的限额申购记录。</p><details class="direct"><summary>基金公司直销公告限额 <span>以官方 APP 实际显示为准</span></summary><div class="direct-content"></div></details></section></template><script src="./app.js"></script></body></html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0d2b3e">
+    <title>QDII 申购限额</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <p class="eyebrow">QDII PURCHASE LIMITS</p>
+        <h1>QDII 申购限额</h1>
+        <p>纳斯达克 100、标普 500 相关基金</p>
+      </header>
+
+      <section class="toolbar" aria-label="指数筛选和数据状态">
+        <div class="tabs" role="tablist">
+          <button class="tab active" data-index="all" role="tab">全部</button>
+          <button class="tab" data-index="nasdaq100" role="tab">纳斯达克100</button>
+          <button class="tab" data-index="sp500" role="tab">标普500</button>
+        </div>
+        <button id="updated-at" class="updated-at" type="button" aria-expanded="false">正在加载数据…</button>
+      </section>
+
+      <section id="data-status" class="data-status" hidden></section>
+      <section id="fund-sections" class="fund-sections" aria-live="polite"></section>
+      <footer>仅整理公开申购限制信息，不构成基金推荐或投资建议。</footer>
+    </main>
+
+    <template id="fund-section-template">
+      <section class="fund-section">
+        <h2></h2>
+        <div class="channel">
+          <div class="channel-heading"><h3>代销</h3><span class="count"></span></div>
+          <div class="table-wrap sales-table"></div>
+          <p class="empty sales-empty" hidden>暂无确认的限额申购记录。</p>
+        </div>
+        <div class="channel direct">
+          <div class="channel-heading"><h3>直销</h3><span>以官方 APP 实际显示为准</span></div>
+          <div class="table-wrap direct-table"></div>
+          <p class="empty direct-empty" hidden>暂无可展示的直销公告限额。</p>
+        </div>
+      </section>
+    </template>
+    <script src="./app.js"></script>
+  </body>
+</html>

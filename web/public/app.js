@@ -1,6 +1,88 @@
-const labels={nasdaq100:"纳斯达克 100",sp500:"标普 500"},states={ok:"数据完整",partial:"数据部分完整",degraded:"数据不完整"};let payload,selected="all";
-const safe=x=>{const e=document.createElement("span");e.textContent=x;return e.innerHTML},limit=(n,c="CNY")=>!Number.isFinite(n)?"未显示上限":c==="USD"?`${n.toLocaleString("zh-CN")} 美元`:n>=10000&&n%10000===0?`${n/10000} 万元`:`${n.toLocaleString("zh-CN")} 元`,status=r=>r.decisionStatus||r.status,value=r=>Number.isFinite(r.decisionLimitAmount)?r.decisionLimitAmount:r.limitAmount,name=n=>/(?:ETF|LOF|FOF)$/i.test(n)?n:n.replace(/(?:人民币|美元现汇|美元现钞|美汇|美钞)?[A-Z](?:类)?(?:人民币|美元现汇|美元现钞|美汇|美钞|\((?:人民币|美元[^)]*)\))?$/i,"").trim();
-function groups(rows){const map=new Map;rows.forEach(r=>{const key=[name(r.name),value(r),r.currency,r.route].join("|");const group=map.get(key)||{...r,name:name(r.name),codes:[]};if(!group.codes.includes(r.code))group.codes.push(r.code);map.set(key,group)});return [...map.values()].sort((a,b)=>(Number.isFinite(value(b))?value(b):Infinity)-(Number.isFinite(value(a))?value(a):Infinity))}
-function render(){const query=document.querySelector("#search").value.trim().toLowerCase(),indexes=selected==="all"?["nasdaq100","sp500"]:[selected],root=document.querySelector("#fund-sections");root.innerHTML="";indexes.forEach(index=>{const rows=payload.rows.filter(r=>r.index===index&&r.channelBucket!=="fund-manager-direct"&&["open","limited"].includes(status(r))&&`${r.name}${r.code}`.toLowerCase().includes(query)),fragment=document.querySelector("#fund-section-template").content.cloneNode(true),list=groups(rows);fragment.querySelector("h2").textContent=labels[index];fragment.querySelector(".count").textContent=`${list.length} 只基金`;const cards=fragment.querySelector(".cards");list.forEach(r=>{const card=document.createElement("article");card.className="card";card.innerHTML=`<div class="amount">${safe(limit(value(r),r.currency))}</div><p class="fund-name">${safe(r.name)}${r.route==="exchange"?"（场内交易）":""}</p><div class="codes">${safe(r.codes.join("、"))}</div>`;cards.append(card)});fragment.querySelector(".empty").hidden=list.length>0;const direct=groups(payload.officialChannelEvidence.filter(r=>r.index===index&&`${r.name}${r.code}`.toLowerCase().includes(query)));fragment.querySelector(".direct-content").innerHTML=direct.length?`<table><thead><tr><th>单日申购上限</th><th>基金</th><th>代码</th></tr></thead><tbody>${direct.map(r=>`<tr><td>${safe(limit(r.amount,r.currency))}</td><td>${safe(r.name)}</td><td>${safe(r.codes.join("、"))}</td></tr>`).join("")}</tbody></table>`:"暂无可展示的直销公告限额。";root.append(fragment)})}
-async function start(){try{payload=await fetch("./data/latest.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw Error();return r.json()})}catch{document.querySelector("#updated-at").textContent="暂未发布数据";const w=document.querySelector("#data-warning");w.hidden=false;w.textContent="数据文件尚未生成，请等待定时任务首次完成。";return}const health=payload.health||{},badge=document.querySelector("#health-badge");badge.textContent=states[health.status]||"状态未知";badge.classList.add(health.status||"degraded");document.querySelector("#updated-at").textContent=`更新于 ${new Intl.DateTimeFormat("zh-CN",{timeZone:payload.timezone||"Asia/Shanghai",dateStyle:"medium",timeStyle:"short",hourCycle:"h23"}).format(new Date(payload.completedAt))} · 已核验 ${health.checked||0}/${health.expected||0}`;if(health.status!=="ok"){const w=document.querySelector("#data-warning");w.hidden=false;w.textContent="本次数据不完整，暂未确认项目不会展示在限额清单中。"}document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{selected=b.dataset.index;document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));render()}));document.querySelector("#search").addEventListener("input",render);render()}
+const labels = { nasdaq100: "纳斯达克100", sp500: "标普500" };
+const healthLabels = { ok: "数据完整", partial: "数据部分完整", degraded: "数据不完整" };
+let payload;
+let selected = "all";
+
+const safe = (value) => {
+  const element = document.createElement("span");
+  element.textContent = value;
+  return element.innerHTML;
+};
+const displayAmount = (value, currency = "CNY") => {
+  if (!Number.isFinite(value)) return "未显示上限";
+  if (currency === "USD") return `${value.toLocaleString("zh-CN")} 美元`;
+  return value >= 10000 && value % 10000 === 0 ? `${value / 10000} 万元` : `${value.toLocaleString("zh-CN")} 元`;
+};
+const finalStatus = (row) => row.decisionStatus || row.status;
+const finalAmount = (row) => Number.isFinite(row.decisionLimitAmount) ? row.decisionLimitAmount : row.limitAmount;
+const baseName = (name = "") => /(?:ETF|LOF|FOF)$/i.test(name) ? name : name.replace(/(?:人民币|美元现汇|美元现钞|美汇|美钞)?[A-Z](?:类)?(?:人民币|美元现汇|美元现钞|美汇|美钞|\((?:人民币|美元[^)]*)\))?$/i, "").trim();
+
+function groupRows(rows, amountOf = finalAmount) {
+  const groups = new Map();
+  rows.forEach((row) => {
+    const amount = amountOf(row);
+    const key = [baseName(row.name), amount, row.currency, row.route].join("|");
+    const group = groups.get(key) || { ...row, name: baseName(row.name), amount, codes: [] };
+    if (!group.codes.includes(row.code)) group.codes.push(row.code);
+    groups.set(key, group);
+  });
+  return [...groups.values()].sort((left, right) => {
+    const leftAmount = Number.isFinite(left.amount) ? left.amount : -Infinity;
+    const rightAmount = Number.isFinite(right.amount) ? right.amount : -Infinity;
+    return rightAmount - leftAmount || left.name.localeCompare(right.name, "zh-CN");
+  });
+}
+
+function renderTable(container, rows) {
+  if (!rows.length) return;
+  container.innerHTML = `<table><thead><tr><th>限额</th><th>基金</th><th>代码</th></tr></thead><tbody>${rows.map((row) => `<tr><td>${safe(displayAmount(row.amount, row.currency))}</td><td>${safe(row.name)}${row.route === "exchange" ? "（场内交易）" : ""}</td><td>${safe(row.codes.join("、"))}</td></tr>`).join("")}</tbody></table>`;
+}
+
+function render() {
+  const indexes = selected === "all" ? ["nasdaq100", "sp500"] : [selected];
+  const root = document.querySelector("#fund-sections");
+  root.innerHTML = "";
+  indexes.forEach((index) => {
+    const sales = groupRows(payload.rows.filter((row) => row.index === index && row.channelBucket !== "fund-manager-direct" && ["open", "limited"].includes(finalStatus(row))));
+    const direct = groupRows(payload.officialChannelEvidence.filter((row) => row.index === index), (row) => row.amount);
+    const section = document.querySelector("#fund-section-template").content.cloneNode(true);
+    section.querySelector("h2").textContent = labels[index];
+    section.querySelector(".count").textContent = `${sales.length} 只`;
+    renderTable(section.querySelector(".sales-table"), sales);
+    renderTable(section.querySelector(".direct-table"), direct);
+    section.querySelector(".sales-empty").hidden = sales.length > 0;
+    section.querySelector(".direct-empty").hidden = direct.length > 0;
+    root.append(section);
+  });
+}
+
+async function start() {
+  const updateButton = document.querySelector("#updated-at");
+  const statusPanel = document.querySelector("#data-status");
+  try {
+    payload = await fetch("./data/latest.json", { cache: "no-store" }).then((response) => {
+      if (!response.ok) throw new Error("数据文件不可用");
+      return response.json();
+    });
+  } catch {
+    updateButton.textContent = "暂未发布数据";
+    return;
+  }
+  const health = payload.health || {};
+  const time = new Intl.DateTimeFormat("zh-CN", { timeZone: payload.timezone || "Asia/Shanghai", dateStyle: "medium", timeStyle: "short", hourCycle: "h23" }).format(new Date(payload.completedAt));
+  updateButton.textContent = `更新于 ${time}`;
+  statusPanel.innerHTML = `<strong>${safe(healthLabels[health.status] || "状态未知")}</strong><span>已核验 ${health.checked || 0}/${health.expected || 0}</span>${health.status !== "ok" ? "<p>暂未确认项目不会进入限额清单。</p>" : ""}`;
+  updateButton.addEventListener("click", () => {
+    const expanded = updateButton.getAttribute("aria-expanded") === "true";
+    updateButton.setAttribute("aria-expanded", String(!expanded));
+    statusPanel.hidden = expanded;
+  });
+  document.querySelectorAll(".tab").forEach((button) => button.addEventListener("click", () => {
+    selected = button.dataset.index;
+    document.querySelectorAll(".tab").forEach((item) => item.classList.toggle("active", item === button));
+    render();
+  }));
+  render();
+}
+
 start();

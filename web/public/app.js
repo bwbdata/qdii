@@ -1,5 +1,6 @@
 const labels = { nasdaq100: "纳斯达克100", sp500: "标普500" };
 const healthLabels = { ok: "数据完整", partial: "数据部分完整", degraded: "数据不完整" };
+const statusLabels = { suspended: "暂停申购", unavailable: "暂不可申购" };
 let payload;
 let selected = "all";
 
@@ -35,7 +36,19 @@ function groupRows(rows, amountOf = finalAmount) {
 
 function renderTable(container, rows) {
   if (!rows.length) return;
-  container.innerHTML = `<table><thead><tr><th>限额</th><th>基金</th><th>代码</th></tr></thead><tbody>${rows.map((row) => `<tr><td>${safe(displayAmount(row.amount, row.currency))}</td><td>${safe(row.name)}${row.route === "exchange" ? "（场内交易）" : ""}</td><td>${safe(row.codes.join("、"))}</td></tr>`).join("")}</tbody></table>`;
+  container.innerHTML = `<table><thead><tr><th>限额</th><th>基金</th><th>代码</th></tr></thead><tbody>${rows.map((row) => `<tr${row.displayStatus ? " class=\"paused-row\"" : ""}><td>${safe(row.displayStatus || displayAmount(row.amount, row.currency))}</td><td>${safe(row.name)}${row.route === "exchange" ? "（场内交易）" : ""}</td><td>${safe(row.codes.join("、"))}</td></tr>`).join("")}</tbody></table>`;
+}
+
+function groupUnavailableRows(rows) {
+  const groups = new Map();
+  rows.forEach((row) => {
+    const status = finalStatus(row);
+    const key = [status, baseName(row.name)].join("|");
+    const group = groups.get(key) || { ...row, name: baseName(row.name), displayStatus: statusLabels[status] || status, codes: [] };
+    if (!group.codes.includes(row.code)) group.codes.push(row.code);
+    groups.set(key, group);
+  });
+  return [...groups.values()].sort((left, right) => left.name.localeCompare(right.name, "zh-CN"));
 }
 
 function render() {
@@ -44,11 +57,12 @@ function render() {
   root.innerHTML = "";
   indexes.forEach((index) => {
     const sales = groupRows(payload.rows.filter((row) => row.index === index && row.channelBucket !== "fund-manager-direct" && ["open", "limited"].includes(finalStatus(row))));
+    const unavailable = groupUnavailableRows(payload.rows.filter((row) => row.index === index && row.channelBucket !== "fund-manager-direct" && ["suspended", "unavailable"].includes(finalStatus(row))));
     const direct = groupRows(payload.officialChannelEvidence.filter((row) => row.index === index), (row) => row.amount);
     const section = document.querySelector("#fund-section-template").content.cloneNode(true);
     section.querySelector("h2").textContent = labels[index];
     section.querySelector(".count").textContent = `${sales.length} 只`;
-    renderTable(section.querySelector(".sales-table"), sales);
+    renderTable(section.querySelector(".sales-table"), sales.concat(unavailable));
     renderTable(section.querySelector(".direct-table"), direct);
     section.querySelector(".sales-empty").hidden = sales.length > 0;
     section.querySelector(".direct-empty").hidden = direct.length > 0;

@@ -169,6 +169,7 @@ function renderExportPage(index, channel, rows, page, pages) {
   const padding = 38;
   const columnWidths = [150, 325, 175];
   const channelName = channel === "sales" ? "代销" : "直销";
+  const isDirect = channel === "direct";
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d");
   context.font = "24px 'PingFang SC', 'Microsoft YaHei', sans-serif";
@@ -195,25 +196,29 @@ function renderExportPage(index, channel, rows, page, pages) {
   context.fillText(`更新于 ${new Intl.DateTimeFormat("zh-CN", { timeZone: payload.timezone || "Asia/Shanghai", dateStyle: "medium", timeStyle: "short", hourCycle: "h23" }).format(new Date(payload.completedAt))}`, padding + 25, 133);
   let y = headerHeight;
   const x = padding;
-  context.fillStyle = "#f3f8f6";
+  context.fillStyle = isDirect ? "#0b3d49" : "#f3f8f6";
   context.fillRect(x, y, width - padding * 2, tableHeaderHeight);
-  context.fillStyle = "#637887";
+  context.fillStyle = isDirect ? "#bce7dc" : "#637887";
   context.font = "bold 17px 'PingFang SC', 'Microsoft YaHei', sans-serif";
   ["限额", "基金", "代码"].forEach((label, column) => context.fillText(label, x + columnWidths.slice(0, column).reduce((sum, item) => sum + item, 0) + 12, y + 30));
   y += tableHeaderHeight;
   measuredRows.forEach((columns, rowIndex) => {
     const height = rowHeights[rowIndex];
     const row = rows[rowIndex];
-    if (row.displayStatus) context.fillStyle = "#fffaf3";
+    if (isDirect) context.fillStyle = "#155f69";
+    else if (row.displayStatus) context.fillStyle = "#fffaf3";
     else context.fillStyle = "#ffffff";
     context.fillRect(x, y, width - padding * 2, height);
-    context.strokeStyle = "#dce7e7";
+    context.strokeStyle = isDirect ? "#2b7580" : "#dce7e7";
     context.beginPath();
     context.moveTo(x, y + height);
     context.lineTo(width - padding, y + height);
     context.stroke();
     columns.forEach((lines, column) => {
-      context.fillStyle = column === 0 ? (row.displayStatus ? "#b76723" : "#009b73") : column === 2 ? "#6c7d88" : "#102d3c";
+      context.fillStyle = column === 0
+        ? (isDirect ? "#ffd67b" : row.displayStatus ? "#b76723" : "#009b73")
+        : column === 2 ? (isDirect ? "#cbe5e1" : "#6c7d88")
+          : isDirect ? "#f3fbfa" : "#102d3c";
       context.font = `${column === 0 || column === 1 ? "bold " : ""}18px 'PingFang SC', 'Microsoft YaHei', sans-serif`;
       const cellX = x + columnWidths.slice(0, column).reduce((sum, item) => sum + item, 0) + 12;
       lines.forEach((line, lineIndex) => context.fillText(line, cellX, y + 29 + lineIndex * 31));

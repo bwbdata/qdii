@@ -17,14 +17,22 @@ const displayAmount = (value, currency = "CNY") => {
 const finalStatus = (row) => row.decisionStatus || row.status;
 const finalAmount = (row) => Number.isFinite(row.decisionLimitAmount) ? row.decisionLimitAmount : row.limitAmount;
 const baseName = (name = "") => /(?:ETF|LOF|FOF)$/i.test(name) ? name : name.replace(/(?:人民币|美元现汇|美元现钞|美汇|美钞)?[A-Z](?:类)?(?:人民币|美元现汇|美元现钞|美汇|美钞|\((?:人民币|美元[^)]*)\))?$/i, "").trim();
+const shareType = (name = "") => {
+  const match = String(name).trim().match(/(?:人民币|美元现汇|美元现钞|美汇|美钞)?([A-Z])(?:类)?(?:人民币|美元现汇|美元现钞|美汇|美钞)?$/i);
+  return match ? match[1].toUpperCase() : "";
+};
+const codeLabel = (row) => `${row.code}${shareType(row.name) ? `(${shareType(row.name)})` : ""}`;
 
 function groupRows(rows, amountOf = finalAmount) {
   const groups = new Map();
   rows.forEach((row) => {
     const amount = amountOf(row);
     const key = [baseName(row.name), amount, row.currency, row.route].join("|");
-    const group = groups.get(key) || { ...row, name: baseName(row.name), amount, codes: [] };
-    if (!group.codes.includes(row.code)) group.codes.push(row.code);
+    const group = groups.get(key) || { ...row, name: baseName(row.name), amount, codes: [], codeLabels: [] };
+    if (!group.codes.includes(row.code)) {
+      group.codes.push(row.code);
+      group.codeLabels.push(codeLabel(row));
+    }
     groups.set(key, group);
   });
   return [...groups.values()].sort((left, right) => {
@@ -36,7 +44,7 @@ function groupRows(rows, amountOf = finalAmount) {
 
 function renderTable(container, rows) {
   if (!rows.length) return;
-  container.innerHTML = `<table><thead><tr><th>限额</th><th>基金</th><th>代码</th></tr></thead><tbody>${rows.map((row) => `<tr${row.displayStatus ? " class=\"paused-row\"" : ""}><td>${safe(row.displayStatus || displayAmount(row.amount, row.currency))}</td><td>${safe(row.name)}${row.route === "exchange" ? "（场内交易）" : ""}</td><td>${safe(row.codes.join("、"))}</td></tr>`).join("")}</tbody></table>`;
+  container.innerHTML = `<table><thead><tr><th>限额</th><th>基金</th><th>代码</th></tr></thead><tbody>${rows.map((row) => `<tr${row.displayStatus ? " class=\"paused-row\"" : ""}><td>${safe(row.displayStatus || displayAmount(row.amount, row.currency))}</td><td>${safe(row.name)}${row.route === "exchange" ? "（场内交易）" : ""}</td><td>${safe((row.codeLabels || row.codes).join("、"))}</td></tr>`).join("")}</tbody></table>`;
 }
 
 function groupUnavailableRows(rows) {
@@ -44,8 +52,11 @@ function groupUnavailableRows(rows) {
   rows.forEach((row) => {
     const status = finalStatus(row);
     const key = [status, baseName(row.name)].join("|");
-    const group = groups.get(key) || { ...row, name: baseName(row.name), displayStatus: statusLabels[status] || status, codes: [] };
-    if (!group.codes.includes(row.code)) group.codes.push(row.code);
+    const group = groups.get(key) || { ...row, name: baseName(row.name), displayStatus: statusLabels[status] || status, codes: [], codeLabels: [] };
+    if (!group.codes.includes(row.code)) {
+      group.codes.push(row.code);
+      group.codeLabels.push(codeLabel(row));
+    }
     groups.set(key, group);
   });
   return [...groups.values()].sort((left, right) => left.name.localeCompare(right.name, "zh-CN"));
@@ -115,7 +126,7 @@ function measureExportRows(rows) {
   return rows.map((row) => {
     const first = row.displayStatus || displayAmount(row.amount, row.currency);
     const second = `${row.name}${row.route === "exchange" ? "（场内交易）" : ""}`;
-    const columns = [first, second, row.codes.join("、")].map((value, column) => wrapText(context, value, columnWidths[column] - 24));
+    const columns = [first, second, (row.codeLabels || row.codes).join("、")].map((value, column) => wrapText(context, value, columnWidths[column] - 24));
     return { row, columns, height: Math.max(54, Math.max(...columns.map((lines) => lines.length)) * 31 + 22) };
   });
 }

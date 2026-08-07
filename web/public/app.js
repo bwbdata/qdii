@@ -44,7 +44,7 @@ function groupRows(rows, amountOf = finalAmount) {
 
 function renderTable(container, rows) {
   if (!rows.length) return;
-  container.innerHTML = `<table><thead><tr><th>限额</th><th>基金</th><th>代码</th></tr></thead><tbody>${rows.map((row) => `<tr${row.displayStatus ? " class=\"paused-row\"" : ""}><td>${safe(row.displayStatus || displayAmount(row.amount, row.currency))}</td><td>${safe(row.name)}${row.route === "exchange" ? "（场内交易）" : ""}</td><td>${safe((row.codeLabels || row.codes).join("、"))}</td></tr>`).join("")}</tbody></table>`;
+  container.innerHTML = `<table><thead><tr><th>限额</th><th>基金</th><th>代码</th></tr></thead><tbody>${rows.map((row) => `<tr${row.displayStatus ? " class=\"paused-row\"" : ""}><td>${safe(row.displayStatus || displayAmount(row.amount, row.currency))}</td><td>${safe(row.name)}${row.route === "exchange" ? "（场内交易）" : ""}</td><td>${(row.codeLabels || row.codes).map(safe).join("<br>")}</td></tr>`).join("")}</tbody></table>`;
 }
 
 function groupUnavailableRows(rows) {
@@ -106,15 +106,17 @@ function roundedRect(context, x, y, width, height, radius, fill) {
 
 function wrapText(context, value, maxWidth) {
   const lines = [];
-  let line = "";
-  for (const character of String(value || "")) {
-    const next = line + character;
-    if (line && context.measureText(next).width > maxWidth) {
-      lines.push(line);
-      line = character;
-    } else line = next;
-  }
-  if (line) lines.push(line);
+  String(value || "").split("\n").forEach((paragraph) => {
+    let line = "";
+    for (const character of paragraph) {
+      const next = line + character;
+      if (line && context.measureText(next).width > maxWidth) {
+        lines.push(line);
+        line = character;
+      } else line = next;
+    }
+    lines.push(line);
+  });
   return lines.length ? lines : [""];
 }
 
@@ -126,7 +128,7 @@ function measureExportRows(rows) {
   return rows.map((row) => {
     const first = row.displayStatus || displayAmount(row.amount, row.currency);
     const second = `${row.name}${row.route === "exchange" ? "（场内交易）" : ""}`;
-    const columns = [first, second, (row.codeLabels || row.codes).join("、")].map((value, column) => wrapText(context, value, columnWidths[column] - 24));
+    const columns = [first, second, (row.codeLabels || row.codes).join("\n")].map((value, column) => wrapText(context, value, columnWidths[column] - 24));
     return { row, columns, height: Math.max(54, Math.max(...columns.map((lines) => lines.length)) * 31 + 22) };
   });
 }

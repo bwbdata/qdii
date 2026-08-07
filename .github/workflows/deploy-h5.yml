@@ -1,6 +1,7 @@
 name: 手动发布 H5
 
 on:
+  push:
   workflow_dispatch:
 
 permissions:

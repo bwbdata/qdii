@@ -22,6 +22,11 @@ const shareType = (name = "") => {
   return match ? match[1].toUpperCase() : "";
 };
 const codeLabel = (row) => `${row.code}${shareType(row.name) ? `(${shareType(row.name)})` : ""}`;
+const sortCodeLabels = (labels) => labels.sort((left, right) => {
+  const leftType = left.match(/\(([A-Z])\)$/)?.[1] || "Z";
+  const rightType = right.match(/\(([A-Z])\)$/)?.[1] || "Z";
+  return leftType.localeCompare(rightType) || left.localeCompare(right, "zh-CN");
+});
 
 function groupRows(rows, amountOf = finalAmount) {
   const groups = new Map();
@@ -35,7 +40,10 @@ function groupRows(rows, amountOf = finalAmount) {
     }
     groups.set(key, group);
   });
-  return [...groups.values()].sort((left, right) => {
+  return [...groups.values()].map((group) => {
+    sortCodeLabels(group.codeLabels);
+    return group;
+  }).sort((left, right) => {
     const leftAmount = Number.isFinite(left.amount) ? left.amount : -Infinity;
     const rightAmount = Number.isFinite(right.amount) ? right.amount : -Infinity;
     return rightAmount - leftAmount || left.name.localeCompare(right.name, "zh-CN");
@@ -59,7 +67,10 @@ function groupUnavailableRows(rows) {
     }
     groups.set(key, group);
   });
-  return [...groups.values()].sort((left, right) => left.name.localeCompare(right.name, "zh-CN"));
+  return [...groups.values()].map((group) => {
+    sortCodeLabels(group.codeLabels);
+    return group;
+  }).sort((left, right) => left.name.localeCompare(right.name, "zh-CN"));
 }
 
 function channelRows(index) {

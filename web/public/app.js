@@ -145,7 +145,7 @@ function measureExportRows(rows) {
 }
 
 function paginateExportRows(rows) {
-  const pageHeight = 1334;
+  const pageHeight = 1000;
   const availableHeight = pageHeight - 168 - 48 - 58;
   const pages = [];
   let current = [];
@@ -165,7 +165,7 @@ function paginateExportRows(rows) {
 
 function renderExportPage(index, channel, rows, page, pages) {
   const width = 750;
-  const height = 1334;
+  const height = 1000;
   const padding = 38;
   const columnWidths = [150, 325, 175];
   const channelName = channel === "sales" ? "代销" : "直销";
@@ -178,9 +178,9 @@ function renderExportPage(index, channel, rows, page, pages) {
   const rowHeights = measured.map((item) => item.height);
   const headerHeight = 168;
   const tableHeaderHeight = 48;
-  canvas.width = width * 2;
-  canvas.height = height * 2;
-  context.scale(2, 2);
+  canvas.width = 1080;
+  canvas.height = 1440;
+  context.scale(canvas.width / width, canvas.height / height);
   context.fillStyle = "#f4f7f6";
   context.fillRect(0, 0, width, height);
   roundedRect(context, padding, 24, width - padding * 2, height - 48, 24, "#ffffff");

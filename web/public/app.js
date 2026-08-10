@@ -170,6 +170,7 @@ function renderExportPage(index, channel, rows, page, pages) {
   const columnWidths = [150, 325, 175];
   const channelName = channel === "sales" ? "代销" : "直销";
   const isDirect = channel === "direct";
+  const headerBackground = isDirect ? "#0b3d49" : "#ffffff";
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d");
   context.font = "24px 'PingFang SC', 'Microsoft YaHei', sans-serif";
@@ -184,14 +185,14 @@ function renderExportPage(index, channel, rows, page, pages) {
   context.fillStyle = "#f4f7f6";
   context.fillRect(0, 0, width, height);
   roundedRect(context, padding, 24, width - padding * 2, height - 48, 24, "#ffffff");
-  roundedRect(context, padding, 24, width - padding * 2, 126, 24, "#0d2b3e");
-  context.fillStyle = "#71d7bf";
+  roundedRect(context, padding, 24, width - padding * 2, 126, 24, headerBackground);
+  context.fillStyle = isDirect ? "#71d7bf" : "#009b73";
   context.font = "bold 16px 'PingFang SC', 'Microsoft YaHei', sans-serif";
   context.fillText("QDII PURCHASE LIMITS", padding + 25, 59);
-  context.fillStyle = "#ffffff";
+  context.fillStyle = isDirect ? "#ffffff" : "#102d3c";
   context.font = "bold 30px 'PingFang SC', 'Microsoft YaHei', sans-serif";
   context.fillText(`${labels[index]}｜${channelName}`, padding + 25, 101);
-  context.fillStyle = "#c8dfdf";
+  context.fillStyle = isDirect ? "#c8dfdf" : "#6c7d88";
   context.font = "18px 'PingFang SC', 'Microsoft YaHei', sans-serif";
   context.fillText(`更新于 ${new Intl.DateTimeFormat("zh-CN", { timeZone: payload.timezone || "Asia/Shanghai", dateStyle: "medium", timeStyle: "short", hourCycle: "h23" }).format(new Date(payload.completedAt))}`, padding + 25, 133);
   let y = headerHeight;

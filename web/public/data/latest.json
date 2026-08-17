@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "completedAt": "2026-08-14T07:15:50.276Z",
+  "completedAt": "2026-08-17T01:20:31.289Z",
   "timezone": "Asia/Shanghai",
   "selection": {
     "index": "all",
@@ -1012,99 +1012,5 @@
     }
   ],
   "changesEvaluated": true,
-  "changes": [
-    {
-      "type": "amount-decreased",
-      "before": {
-        "index": "nasdaq100",
-        "code": "012752",
-        "name": "建信纳斯达克100指数(QDII)C人民币",
-        "channel": "基金公司直销",
-        "channelBucket": "fund-manager-direct",
-        "channelType": "official-direct-sale",
-        "currency": "CNY",
-        "route": "otc",
-        "status": "limited",
-        "limitAmount": 100000,
-        "decisionStatus": "limited",
-        "decisionLimitAmount": 100000
-      },
-      "after": {
-        "index": "nasdaq100",
-        "code": "012752",
-        "name": "建信纳斯达克100指数(QDII)C人民币",
-        "channel": "基金公司直销",
-        "channelBucket": "fund-manager-direct",
-        "channelType": "official-direct-sale",
-        "currency": "CNY",
-        "route": "otc",
-        "status": "limited",
-        "limitAmount": 10000,
-        "decisionStatus": "limited",
-        "decisionLimitAmount": 10000
-      }
-    },
-    {
-      "type": "amount-decreased",
-      "before": {
-        "index": "nasdaq100",
-        "code": "023422",
-        "name": "建信纳斯达克100指数(QDII)D人民币",
-        "channel": "基金公司直销",
-        "channelBucket": "fund-manager-direct",
-        "channelType": "official-direct-sale",
-        "currency": "CNY",
-        "route": "otc",
-        "status": "limited",
-        "limitAmount": 100000,
-        "decisionStatus": "limited",
-        "decisionLimitAmount": 100000
-      },
-      "after": {
-        "index": "nasdaq100",
-        "code": "023422",
-        "name": "建信纳斯达克100指数(QDII)D人民币",
-        "channel": "基金公司直销",
-        "channelBucket": "fund-manager-direct",
-        "channelType": "official-direct-sale",
-        "currency": "CNY",
-        "route": "otc",
-        "status": "limited",
-        "limitAmount": 10000,
-        "decisionStatus": "limited",
-        "decisionLimitAmount": 10000
-      }
-    },
-    {
-      "type": "amount-decreased",
-      "before": {
-        "index": "nasdaq100",
-        "code": "539001",
-        "name": "建信纳斯达克100指数(QDII)A人民币",
-        "channel": "基金公司直销",
-        "channelBucket": "fund-manager-direct",
-        "channelType": "official-direct-sale",
-        "currency": "CNY",
-        "route": "otc",
-        "status": "limited",
-        "limitAmount": 100000,
-        "decisionStatus": "limited",
-        "decisionLimitAmount": 100000
-      },
-      "after": {
-        "index": "nasdaq100",
-        "code": "539001",
-        "name": "建信纳斯达克100指数(QDII)A人民币",
-        "channel": "基金公司直销",
-        "channelBucket": "fund-manager-direct",
-        "channelType": "official-direct-sale",
-        "currency": "CNY",
-        "route": "otc",
-        "status": "limited",
-        "limitAmount": 10000,
-        "decisionStatus": "limited",
-        "decisionLimitAmount": 10000
-      }
-    }
-  ]
+  "changes": []
 }

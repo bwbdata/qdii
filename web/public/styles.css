@@ -85,9 +85,9 @@ body {
 }
 .table-head, .fund-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 92px 92px 92px;
+  grid-template-columns: minmax(0, 1fr) 74px 78px 78px;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 .table-head {
   padding: 10px 14px;
@@ -109,7 +109,7 @@ body {
 .fund-row.paused { background: var(--warn-soft); }
 .fund-row.unavailable { background: var(--danger-soft); }
 
-.fund-name { font-weight: 700; color: var(--ink); }
+.fund-name { font-weight: 700; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .fund-meta { margin-top: 2px; color: var(--muted); font-size: 12px; }
 .fund-meta .codes { font-family: var(--mono); font-size: 11px; }
 
@@ -136,3 +136,19 @@ body {
 .empty { margin: 0; padding: 22px 16px; color: var(--muted); text-align: center; font-size: 13px; }
 
 footer { margin-top: 16px; color: var(--muted); font-size: 11px; text-align: center; }
+
+@media (max-width: 520px) {
+  .shell { padding: 14px 8px 22px; }
+  .page-head { margin-bottom: 10px; }
+  .toolbar { margin-bottom: 10px; }
+  .tabs { width: 100%; }
+  .table-head, .fund-row {
+    grid-template-columns: minmax(0, 1fr) 58px 62px 62px;
+    column-gap: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .table-head { padding-top: 8px; padding-bottom: 8px; }
+  .col-code { text-align: left; font-size: 11px; }
+  .fund-row { padding-top: 4px; padding-bottom: 4px; }
+}

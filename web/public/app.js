@@ -1,6 +1,6 @@
 const labels = { nasdaq100: "纳斯达克100", sp500: "标普500" };
 const healthLabels = { ok: "数据完整", partial: "数据部分完整", degraded: "数据不完整" };
-const statusText = { suspended: "暂停申购", unavailable: "暂不可申购", limited: "限购", open: "开放" };
+const statusText = { suspended: "暂停", unavailable: "不可", limited: "限购", open: "开放" };
 let payload;
 let selected = "nasdaq100";
 
@@ -9,10 +9,12 @@ const safe = (value) => {
   element.textContent = value;
   return element.innerHTML;
 };
-const displayAmount = (value, currency = "CNY") => {
+const shortAmount = (value) => {
   if (!Number.isFinite(value)) return "";
-  if (currency === "USD") return `${value.toLocaleString("zh-CN")} 美元`;
-  return value >= 10000 && value % 10000 === 0 ? `${value / 10000} 万元` : `${value.toLocaleString("zh-CN")} 元`;
+  if (value < 100) return String(value);
+  if (value < 1000) return `${value / 100}百`;
+  if (value < 10000) return `${value / 1000}千`;
+  return `${value / 10000}万`;
 };
 const finalStatus = (row) => row.decisionStatus || row.status;
 const finalAmount = (row) => (Number.isFinite(row.decisionLimitAmount) ? row.decisionLimitAmount : row.limitAmount);
@@ -40,16 +42,16 @@ function buildRows(index) {
 
 function salesCell(row) {
   if (row.salesAmount !== null) {
-    return `<div class="amount limited"><span class="num">${safe(row.salesAmount.toLocaleString("zh-CN"))}</span><span class="unit">元</span></div>`;
+    return `<div class="amount limited"><span class="num">${safe(shortAmount(row.salesAmount))}</span></div>`;
   }
-  if (row.status === "suspended") return `<div class="amount paused">暂停申购</div>`;
-  if (row.status === "unavailable") return `<div class="amount na">暂不可申购</div>`;
+  if (row.status === "suspended") return `<div class="amount paused">暂停</div>`;
+  if (row.status === "unavailable") return `<div class="amount na">不可</div>`;
   return `<div class="amount none">状态未知</div>`;
 }
 
 function directCell(row) {
   if (row.directAmount === null) return `<div class="amount none">—</div>`;
-  return `<div class="amount limited"><span class="num">${safe(row.directAmount.toLocaleString("zh-CN"))}</span><span class="unit">元</span></div>`;
+  return `<div class="amount limited"><span class="num">${safe(shortAmount(row.directAmount))}</span></div>`;
 }
 
 function rowClass(row) {
@@ -80,135 +82,6 @@ function render() {
   statusPanel.hidden = false;
 }
 
-function roundedRect(context, x, y, width, height, radius, fill) {
-  context.beginPath();
-  context.roundRect(x, y, width, height, radius);
-  context.fillStyle = fill;
-  context.fill();
-}
-
-function wrapText(context, value, maxWidth) {
-  const lines = [];
-  String(value || "").split("\n").forEach((paragraph) => {
-    let line = "";
-    for (const character of paragraph) {
-      const next = line + character;
-      if (line && context.measureText(next).width > maxWidth) {
-        lines.push(line);
-        line = character;
-      } else line = next;
-    }
-    lines.push(line);
-  });
-  return lines.length ? lines : [""];
-}
-
-function measureExportRows(rows) {
-  const canvas = document.createElement("canvas");
-  const context = canvas.getContext("2d");
-  const columnWidths = [250, 110, 100, 100];
-  context.font = "24px 'PingFang SC', 'Microsoft YaHei', sans-serif";
-  return rows.map((row) => {
-    const first = displayName(row.name);
-    const second = row.code;
-    const third = salesCellPlain(row);
-    const fourth = directCellPlain(row);
-    const columns = [first, second, third, fourth].map((value, column) => wrapText(context, value, columnWidths[column] - 24));
-    return { row, columns, height: Math.max(54, Math.max(...columns.map((lines) => lines.length)) * 31 + 22) };
-  });
-}
-
-function salesCellPlain(row) {
-  if (row.salesAmount !== null) return `${row.salesAmount.toLocaleString("zh-CN")} 元`;
-  if (row.status === "suspended") return "暂停申购";
-  if (row.status === "unavailable") return "暂不可申购";
-  return "状态未知";
-}
-
-function directCellPlain(row) {
-  if (row.directAmount === null) return "—";
-  return `${row.directAmount.toLocaleString("zh-CN")} 元`;
-}
-
-function paginateExportRows(rows) {
-  const pageHeight = 1000;
-  const availableHeight = pageHeight - 168 - 48 - 58;
-  const pages = [];
-  let current = [];
-  let usedHeight = 0;
-  measureExportRows(rows).forEach((item) => {
-    if (current.length && usedHeight + item.height > availableHeight) {
-      pages.push(current.map((entry) => entry.row));
-      current = [];
-      usedHeight = 0;
-    }
-    current.push(item);
-    usedHeight += item.height;
-  });
-  if (current.length) pages.push(current.map((entry) => entry.row));
-  return pages;
-}
-
-function renderExportPage(index, rows, page, pages) {
-  const width = 750;
-  const height = 1000;
-  const padding = 38;
-  const columnWidths = [250, 110, 100, 100];
-  const canvas = document.createElement("canvas");
-  const context = canvas.getContext("2d");
-  context.font = "24px 'PingFang SC', 'Microsoft YaHei', sans-serif";
-  const measured = measureExportRows(rows);
-  const measuredRows = measured.map((item) => item.columns);
-  const rowHeights = measured.map((item) => item.height);
-  const headerHeight = 168;
-  const tableHeaderHeight = 48;
-  canvas.width = 1080;
-  canvas.height = 1440;
-  context.scale(canvas.width / width, canvas.height / height);
-  context.fillStyle = "#f4f7f6";
-  context.fillRect(0, 0, width, height);
-  roundedRect(context, padding, 24, width - padding * 2, height - 48, 24, "#ffffff");
-  roundedRect(context, padding, 24, width - padding * 2, 126, 24, "#ffffff");
-  context.fillStyle = "#009b73";
-  context.font = "bold 16px 'PingFang SC', 'Microsoft YaHei', sans-serif";
-  context.fillText("QDII PURCHASE LIMITS", padding + 25, 59);
-  context.fillStyle = "#102d3c";
-  context.font = "bold 30px 'PingFang SC', 'Microsoft YaHei', sans-serif";
-  context.fillText(`${labels[index] || "全部"}｜代销 / 直销限额`, padding + 25, 101);
-  context.fillStyle = "#6c7d88";
-  context.font = "18px 'PingFang SC', 'Microsoft YaHei', sans-serif";
-  context.fillText(`更新于 ${new Intl.DateTimeFormat("zh-CN", { timeZone: payload.timezone || "Asia/Shanghai", dateStyle: "medium", timeStyle: "short", hourCycle: "h23" }).format(new Date(payload.completedAt))}`, padding + 25, 133);
-  let y = headerHeight;
-  const x = padding;
-  context.fillStyle = "#f0f6f4";
-  context.fillRect(x, y, width - padding * 2, tableHeaderHeight);
-  context.fillStyle = "#637887";
-  context.font = "bold 17px 'PingFang SC', 'Microsoft YaHei', sans-serif";
-  ["基金", "代码", "代销", "直销"].forEach((label, column) => context.fillText(label, x + columnWidths.slice(0, column).reduce((sum, item) => sum + item, 0) + 12, y + 30));
-  y += tableHeaderHeight;
-  measuredRows.forEach((columns, rowIndex) => {
-    const height = rowHeights[rowIndex];
-    context.fillStyle = "#ffffff";
-    context.fillRect(x, y, width - padding * 2, height);
-    context.strokeStyle = "#dce7e7";
-    context.beginPath();
-    context.moveTo(x, y + height);
-    context.lineTo(width - padding, y + height);
-    context.stroke();
-    columns.forEach((lines, column) => {
-      context.fillStyle = column === 0 ? "#102d3c" : "#009b73";
-      context.font = `${column === 0 ? "bold " : ""}18px 'PingFang SC', 'Microsoft YaHei', sans-serif`;
-      const cellX = x + columnWidths.slice(0, column).reduce((sum, item) => sum + item, 0) + 12;
-      lines.forEach((line, lineIndex) => context.fillText(line, cellX, y + 29 + lineIndex * 31));
-    });
-    y += height;
-  });
-  context.fillStyle = "#8a9a9f";
-  context.font = "16px 'PingFang SC', 'Microsoft YaHei', sans-serif";
-  context.fillText(`第 ${page}/${pages} 页 · 仅供信息查询，不构成投资建议`, padding + 16, height - 22);
-  return canvas;
-}
-
 function downloadCanvas(canvas, filename) {
   canvas.toBlob((blob) => {
     if (!blob) return;
@@ -220,17 +93,52 @@ function downloadCanvas(canvas, filename) {
   }, "image/png");
 }
 
-function exportCurrentSelection() {
-  const indexes = selected === "all" ? ["nasdaq100", "sp500"] : [selected];
-  indexes.forEach((index) => {
-    const rows = buildRows(index);
+async function exportCurrentSelection() {
+  const button = document.querySelector("#export-current");
+  const original = button.textContent;
+  button.disabled = true;
+  button.textContent = "生成中…";
+  let sheet;
+  try {
+    const rows = buildRows(selected);
     if (!rows.length) return;
-    const pages = paginateExportRows(rows);
-    pages.forEach((pageRows, page) => {
-      const canvas = renderExportPage(index, pageRows, page + 1, pages.length);
-      downloadCanvas(canvas, `${labels[index] || "全部"}-代销直销-${page + 1}.png`);
-    });
-  });
+    const name = selected === "all" ? "全部" : labels[selected];
+    const time = new Intl.DateTimeFormat("zh-CN", { timeZone: payload.timezone || "Asia/Shanghai", dateStyle: "medium", timeStyle: "short", hourCycle: "h23" }).format(new Date(payload.completedAt));
+    const health = payload.health || {};
+    sheet = document.createElement("div");
+    sheet.className = "export-sheet";
+    sheet.innerHTML = `
+      <header class="page-head">
+        <h1>QDII 申购限额</h1>
+        <p class="updated-at">更新于 ${time}</p>
+      </header>
+      <section class="data-status"><strong>${safe(healthLabels[health.status] || "状态未知")}</strong><span>已核验 ${health.checked || 0}/${health.expected || 0}</span></section>
+      <section class="table-card">
+        <div class="table-head">
+          <span class="col-fund">基金</span>
+          <span class="col-code">代码</span>
+          <span class="col-amount">代销</span>
+          <span class="col-amount">直销</span>
+        </div>
+        <div class="fund-list">${rows.map(renderRow).join("")}</div>
+      </section>
+      <footer>仅整理公开申购限制信息，不构成基金推荐或投资建议。</footer>
+    `;
+    document.body.appendChild(sheet);
+    if (document.fonts && document.fonts.ready) {
+      try { await document.fonts.ready; } catch { /* 忽略字体等待失败 */ }
+    }
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    const canvas = await htmlToImage.toCanvas(sheet, { pixelRatio: 2, backgroundColor: "#f4f7f6" });
+    downloadCanvas(canvas, `${name}-代销直销.png`);
+  } catch (error) {
+    console.error(error);
+    alert(`导出失败：${error.message}`);
+  } finally {
+    if (sheet && sheet.parentNode) sheet.remove();
+    button.disabled = false;
+    button.textContent = original;
+  }
 }
 
 async function start() {

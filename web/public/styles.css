@@ -85,7 +85,7 @@ body {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 74px 56px 56px;
   align-items: center;
-  gap: 2px;
+  gap: 1px;
 }
 .table-head {
   padding: 8px 4px;
@@ -143,10 +143,10 @@ footer { margin-top: 16px; color: var(--muted); font-size: 11px; text-align: cen
   font: 14px/1.5 ui-sans-serif, system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 .export-sheet .table-head, .export-sheet .fund-row {
-  grid-template-columns: minmax(0, 1fr) 58px 44px 44px;
-  column-gap: 1px;
-  padding-left: 2px;
-  padding-right: 2px;
+  grid-template-columns: minmax(0, 1fr) 50px 40px 40px;
+  column-gap: 0;
+  padding-left: 1px;
+  padding-right: 1px;
 }
 .export-sheet .table-head { padding-top: 8px; padding-bottom: 8px; }
 .export-sheet .col-code { text-align: left; font-size: 11px; }
@@ -160,10 +160,10 @@ footer { margin-top: 16px; color: var(--muted); font-size: 11px; text-align: cen
   .toolbar { margin-bottom: 10px; }
   .tabs { width: 100%; }
   .table-head, .fund-row {
-    grid-template-columns: minmax(0, 1fr) 58px 44px 44px;
-    column-gap: 1px;
-    padding-left: 2px;
-    padding-right: 2px;
+    grid-template-columns: minmax(0, 1fr) 50px 40px 40px;
+    column-gap: 0;
+    padding-left: 1px;
+    padding-right: 1px;
   }
   .table-head { padding-top: 8px; padding-bottom: 8px; }
   .col-code { text-align: left; font-size: 11px; }

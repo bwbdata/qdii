@@ -6,17 +6,14 @@
     <meta name="theme-color" content="#0d2b3e">
     <title>QDII 申购限额</title>
     <link rel="stylesheet" href="./styles.css">
-    <style>
-      .direct .table-wrap { border-color: #155f69; background: #155f69; }
-      .direct .table-wrap table { background: #155f69; }
-      .direct .table-wrap th { background: #0b3d49; color: #bce7dc; }
-      .direct .table-wrap td { border-color: #2b7580; color: #f3fbfa; }
-      .direct .table-wrap td:first-child { color: #ffd67b; }
-      .direct .table-wrap td:last-child { color: #cbe5e1; }
-    </style>
   </head>
   <body>
     <main class="shell">
+      <header class="page-head">
+        <h1>QDII 申购限额</h1>
+        <p id="updated-at" class="updated-at"></p>
+      </header>
+
       <section class="toolbar" aria-label="指数筛选和数据状态">
         <div class="tabs" role="tablist">
           <button class="tab active" data-index="nasdaq100" role="tab">纳斯达克100</button>
@@ -26,26 +23,21 @@
         <button id="export-current" class="export-button" type="button">导出图片</button>
       </section>
 
-      <section id="fund-sections" class="fund-sections" aria-live="polite"></section>
+      <section id="data-status" class="data-status" hidden aria-live="polite"></section>
+
+      <section class="table-card" aria-live="polite">
+        <div class="table-head">
+          <span class="col-fund">基金</span>
+          <span class="col-code">代码</span>
+          <span class="col-amount">代销</span>
+          <span class="col-amount">直销</span>
+        </div>
+        <div id="fund-list" class="fund-list"></div>
+        <p id="empty-hint" class="empty" hidden>当前筛选下暂无数据。</p>
+      </section>
+
       <footer>仅整理公开申购限制信息，不构成基金推荐或投资建议。</footer>
     </main>
-
-    <template id="fund-section-template">
-      <section class="fund-section">
-        <div class="section-header"><h2></h2><button class="updated-at" type="button" aria-expanded="false"></button></div>
-        <section class="data-status" hidden></section>
-        <div class="channel">
-          <div class="channel-heading"><h3>代销</h3><span class="count"></span></div>
-          <div class="table-wrap sales-table"></div>
-          <p class="empty sales-empty" hidden>暂无确认的限额申购记录。</p>
-        </div>
-        <div class="channel direct">
-          <div class="channel-heading"><h3>直销</h3><span>以官方 APP 实际显示为准</span></div>
-          <div class="table-wrap direct-table"></div>
-          <p class="empty direct-empty" hidden>暂无可展示的直销公告限额。</p>
-        </div>
-      </section>
-    </template>
     <script src="./app.js"></script>
   </body>
 </html>

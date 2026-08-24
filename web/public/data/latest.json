@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "completedAt": "2026-08-17T01:20:31.289Z",
+  "completedAt": "2026-08-24T02:57:05.547Z",
   "timezone": "Asia/Shanghai",
   "selection": {
     "index": "all",
@@ -122,9 +122,9 @@
       "currency": "CNY",
       "route": "otc",
       "status": "limited",
-      "limitAmount": 100,
+      "limitAmount": 10,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 100
+      "decisionLimitAmount": 10
     },
     {
       "index": "sp500",
@@ -389,7 +389,7 @@
       "route": "otc",
       "status": "unavailable",
       "limitAmount": null,
-      "decisionStatus": "unavailable",
+      "decisionStatus": "suspended",
       "decisionLimitAmount": null
     },
     {
@@ -682,9 +682,9 @@
       "currency": "CNY",
       "route": "otc",
       "status": "limited",
-      "limitAmount": 100,
+      "limitAmount": 10,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 100
+      "decisionLimitAmount": 10
     },
     {
       "index": "nasdaq100",
@@ -751,10 +751,10 @@
       "channelType": "third-party-public-sales",
       "currency": "CNY",
       "route": "otc",
-      "status": "suspended",
-      "limitAmount": null,
-      "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "status": "limited",
+      "limitAmount": 50,
+      "decisionStatus": "limited",
+      "decisionLimitAmount": 50
     },
     {
       "index": "sp500",
@@ -808,9 +808,9 @@
       "currency": "CNY",
       "route": "otc",
       "status": "limited",
-      "limitAmount": 100,
+      "limitAmount": 10,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 100
+      "decisionLimitAmount": 10
     }
   ],
   "officialChannelEvidence": [
@@ -846,7 +846,7 @@
       "index": "nasdaq100",
       "code": "012752",
       "name": "建信纳斯达克100指数(QDII)C人民币",
-      "amount": 10000,
+      "amount": 50,
       "currency": "CNY"
     },
     {
@@ -868,13 +868,6 @@
       "code": "016453",
       "name": "南方纳斯达克100指数发起(QDII)C",
       "amount": 10,
-      "currency": "CNY"
-    },
-    {
-      "index": "sp500",
-      "code": "018738",
-      "name": "博时标普500ETF联接E(人民币)",
-      "amount": 100,
       "currency": "CNY"
     },
     {
@@ -979,7 +972,7 @@
       "index": "nasdaq100",
       "code": "023422",
       "name": "建信纳斯达克100指数(QDII)D人民币",
-      "amount": 10000,
+      "amount": 10,
       "currency": "CNY"
     },
     {
@@ -998,6 +991,13 @@
     },
     {
       "index": "nasdaq100",
+      "code": "160213",
+      "name": "国泰纳斯达克100指数",
+      "amount": 100,
+      "currency": "CNY"
+    },
+    {
+      "index": "nasdaq100",
       "code": "270042",
       "name": "广发纳斯达克100ETF联接人民币(QDII)A",
       "amount": 5,
@@ -1007,10 +1007,264 @@
       "index": "nasdaq100",
       "code": "539001",
       "name": "建信纳斯达克100指数(QDII)A人民币",
-      "amount": 10000,
+      "amount": 50,
       "currency": "CNY"
     }
   ],
   "changesEvaluated": true,
-  "changes": []
+  "changes": [
+    {
+      "type": "amount-decreased",
+      "before": {
+        "index": "nasdaq100",
+        "code": "012752",
+        "name": "建信纳斯达克100指数(QDII)C人民币",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10000,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10000
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "012752",
+        "name": "建信纳斯达克100指数(QDII)C人民币",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 50,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 50
+      }
+    },
+    {
+      "type": "amount-decreased",
+      "before": {
+        "index": "nasdaq100",
+        "code": "012752",
+        "name": "建信纳斯达克100指数(QDII)C人民币",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 100,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 100
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "012752",
+        "name": "建信纳斯达克100指数(QDII)C人民币",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10
+      }
+    },
+    {
+      "type": "amount-decreased",
+      "before": {
+        "index": "nasdaq100",
+        "code": "023422",
+        "name": "建信纳斯达克100指数(QDII)D人民币",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10000,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10000
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "023422",
+        "name": "建信纳斯达克100指数(QDII)D人民币",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10
+      }
+    },
+    {
+      "type": "amount-decreased",
+      "before": {
+        "index": "nasdaq100",
+        "code": "023422",
+        "name": "建信纳斯达克100指数(QDII)D人民币",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 100,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 100
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "023422",
+        "name": "建信纳斯达克100指数(QDII)D人民币",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10
+      }
+    },
+    {
+      "type": "status-changed",
+      "before": {
+        "index": "nasdaq100",
+        "code": "160213",
+        "name": "国泰纳斯达克100指数",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "suspended",
+        "limitAmount": null,
+        "decisionStatus": "suspended",
+        "decisionLimitAmount": null
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "160213",
+        "name": "国泰纳斯达克100指数",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 50,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 50
+      }
+    },
+    {
+      "type": "amount-decreased",
+      "before": {
+        "index": "nasdaq100",
+        "code": "539001",
+        "name": "建信纳斯达克100指数(QDII)A人民币",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10000,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10000
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "539001",
+        "name": "建信纳斯达克100指数(QDII)A人民币",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 50,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 50
+      }
+    },
+    {
+      "type": "amount-decreased",
+      "before": {
+        "index": "nasdaq100",
+        "code": "539001",
+        "name": "建信纳斯达克100指数(QDII)A人民币",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 100,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 100
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "539001",
+        "name": "建信纳斯达克100指数(QDII)A人民币",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10
+      }
+    },
+    {
+      "type": "channel-added",
+      "before": null,
+      "after": {
+        "index": "nasdaq100",
+        "code": "160213",
+        "name": "国泰纳斯达克100指数",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 100,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 100
+      }
+    },
+    {
+      "type": "channel-removed",
+      "before": {
+        "index": "sp500",
+        "code": "018738",
+        "name": "博时标普500ETF联接E(人民币)",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 100,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 100
+      },
+      "after": null
+    }
+  ]
 }

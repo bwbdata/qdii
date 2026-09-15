@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "completedAt": "2026-08-31T08:27:14.396Z",
+  "completedAt": "2026-09-15T09:43:21.134Z",
   "timezone": "Asia/Shanghai",
   "selection": {
     "index": "all",
@@ -52,9 +52,9 @@
       "currency": "CNY",
       "route": "otc",
       "status": "limited",
-      "limitAmount": 5,
-      "decisionStatus": "limited",
-      "decisionLimitAmount": 5
+      "limitAmount": 2,
+      "decisionStatus": "suspended",
+      "decisionLimitAmount": 2
     },
     {
       "index": "sp500",
@@ -65,10 +65,10 @@
       "channelType": "third-party-public-sales",
       "currency": "CNY",
       "route": "otc",
-      "status": "suspended",
-      "limitAmount": null,
-      "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "status": "limited",
+      "limitAmount": 100,
+      "decisionStatus": "limited",
+      "decisionLimitAmount": 100
     },
     {
       "index": "sp500",
@@ -79,10 +79,10 @@
       "channelType": "third-party-public-sales",
       "currency": "CNY",
       "route": "otc",
-      "status": "suspended",
-      "limitAmount": null,
-      "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "status": "limited",
+      "limitAmount": 100,
+      "decisionStatus": "limited",
+      "decisionLimitAmount": 100
     },
     {
       "index": "sp500",
@@ -94,9 +94,9 @@
       "currency": "CNY",
       "route": "otc",
       "status": "limited",
-      "limitAmount": 10,
+      "limitAmount": 100,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 100
     },
     {
       "index": "nasdaq100",
@@ -331,10 +331,10 @@
       "channelType": "third-party-public-sales",
       "currency": "CNY",
       "route": "otc",
-      "status": "suspended",
-      "limitAmount": null,
-      "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "status": "limited",
+      "limitAmount": 100,
+      "decisionStatus": "limited",
+      "decisionLimitAmount": 100
     },
     {
       "index": "nasdaq100",
@@ -345,10 +345,10 @@
       "channelType": "third-party-public-sales",
       "currency": "CNY",
       "route": "otc",
-      "status": "suspended",
-      "limitAmount": null,
-      "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "status": "limited",
+      "limitAmount": 100,
+      "decisionStatus": "limited",
+      "decisionLimitAmount": 100
     },
     {
       "index": "sp500",
@@ -472,9 +472,9 @@
       "currency": "CNY",
       "route": "otc",
       "status": "limited",
-      "limitAmount": 10,
+      "limitAmount": 100,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 100
     },
     {
       "index": "nasdaq100",
@@ -486,9 +486,9 @@
       "currency": "CNY",
       "route": "otc",
       "status": "limited",
-      "limitAmount": 10,
+      "limitAmount": 100,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 100
     },
     {
       "index": "nasdaq100",
@@ -556,9 +556,9 @@
       "currency": "CNY",
       "route": "otc",
       "status": "limited",
-      "limitAmount": 10,
+      "limitAmount": 200,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 200
     },
     {
       "index": "nasdaq100",
@@ -570,9 +570,9 @@
       "currency": "CNY",
       "route": "otc",
       "status": "limited",
-      "limitAmount": 10,
+      "limitAmount": 200,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 200
     },
     {
       "index": "nasdaq100",
@@ -613,7 +613,7 @@
       "route": "otc",
       "status": "unavailable",
       "limitAmount": null,
-      "decisionStatus": "unavailable",
+      "decisionStatus": "suspended",
       "decisionLimitAmount": null
     },
     {
@@ -641,7 +641,7 @@
       "route": "otc",
       "status": "unavailable",
       "limitAmount": null,
-      "decisionStatus": "suspended",
+      "decisionStatus": "unavailable",
       "decisionLimitAmount": null
     },
     {
@@ -655,7 +655,7 @@
       "route": "otc",
       "status": "unavailable",
       "limitAmount": null,
-      "decisionStatus": "suspended",
+      "decisionStatus": "unavailable",
       "decisionLimitAmount": null
     },
     {
@@ -738,9 +738,9 @@
       "currency": "CNY",
       "route": "otc",
       "status": "limited",
-      "limitAmount": 10,
+      "limitAmount": 100,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 100
     },
     {
       "index": "nasdaq100",
@@ -752,9 +752,9 @@
       "currency": "CNY",
       "route": "otc",
       "status": "limited",
-      "limitAmount": 50,
+      "limitAmount": 100,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 50
+      "decisionLimitAmount": 100
     },
     {
       "index": "sp500",
@@ -794,9 +794,9 @@
       "currency": "CNY",
       "route": "otc",
       "status": "limited",
-      "limitAmount": 5,
-      "decisionStatus": "limited",
-      "decisionLimitAmount": 5
+      "limitAmount": 2,
+      "decisionStatus": "suspended",
+      "decisionLimitAmount": 2
     },
     {
       "index": "nasdaq100",
@@ -822,17 +822,10 @@
       "currency": "CNY"
     },
     {
-      "index": "nasdaq100",
-      "code": "006479",
-      "name": "广发纳斯达克100ETF联接人民币(QDII)C",
-      "amount": 5,
-      "currency": "CNY"
-    },
-    {
       "index": "sp500",
       "code": "008401",
       "name": "大成标普500等权重指数(QDII)C人民币",
-      "amount": 100,
+      "amount": 1000,
       "currency": "CNY"
     },
     {
@@ -874,28 +867,28 @@
       "index": "nasdaq100",
       "code": "018966",
       "name": "汇添富纳斯达克100ETF发起式联接(QDII)人民币A",
-      "amount": 10,
+      "amount": 1000,
       "currency": "CNY"
     },
     {
       "index": "nasdaq100",
       "code": "018967",
       "name": "汇添富纳斯达克100ETF发起式联接(QDII)人民币C",
-      "amount": 10,
+      "amount": 1000,
       "currency": "CNY"
     },
     {
       "index": "nasdaq100",
       "code": "019441",
       "name": "万家纳斯达克100指数发起式(QDII)A",
-      "amount": 10,
+      "amount": 100,
       "currency": "CNY"
     },
     {
       "index": "nasdaq100",
       "code": "019442",
       "name": "万家纳斯达克100指数发起式(QDII)C",
-      "amount": 10,
+      "amount": 100,
       "currency": "CNY"
     },
     {
@@ -916,28 +909,28 @@
       "index": "nasdaq100",
       "code": "019547",
       "name": "招商纳斯达克100ETF发起式联接(QDII)A",
-      "amount": 100,
+      "amount": 10,
       "currency": "CNY"
     },
     {
       "index": "nasdaq100",
       "code": "019548",
       "name": "招商纳斯达克100ETF发起式联接(QDII)C",
-      "amount": 100,
+      "amount": 10,
       "currency": "CNY"
     },
     {
       "index": "nasdaq100",
       "code": "019736",
       "name": "宝盈纳斯达克100指数发起(QDII)A人民币",
-      "amount": 10,
+      "amount": 200,
       "currency": "CNY"
     },
     {
       "index": "nasdaq100",
       "code": "019737",
       "name": "宝盈纳斯达克100指数发起(QDII)C人民币",
-      "amount": 10,
+      "amount": 200,
       "currency": "CNY"
     },
     {
@@ -951,14 +944,7 @@
       "index": "nasdaq100",
       "code": "021773",
       "name": "汇添富纳斯达克100ETF发起式联接(QDII)人民币E",
-      "amount": 10,
-      "currency": "CNY"
-    },
-    {
-      "index": "nasdaq100",
-      "code": "021778",
-      "name": "广发纳指100ETF联接(QDII)人民币F",
-      "amount": 100,
+      "amount": 1000,
       "currency": "CNY"
     },
     {
@@ -986,7 +972,7 @@
       "index": "sp500",
       "code": "096001",
       "name": "大成标普500等权重指数(QDII)A人民币",
-      "amount": 100,
+      "amount": 1000,
       "currency": "CNY"
     },
     {
@@ -998,13 +984,6 @@
     },
     {
       "index": "nasdaq100",
-      "code": "270042",
-      "name": "广发纳斯达克100ETF联接人民币(QDII)A",
-      "amount": 5,
-      "currency": "CNY"
-    },
-    {
-      "index": "nasdaq100",
       "code": "539001",
       "name": "建信纳斯达克100指数(QDII)A人民币",
       "amount": 50,
@@ -1012,5 +991,804 @@
     }
   ],
   "changesEvaluated": true,
-  "changes": []
+  "changes": [
+    {
+      "type": "status-changed",
+      "before": {
+        "index": "nasdaq100",
+        "code": "006479",
+        "name": "广发纳斯达克100ETF联接人民币(QDII)C",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 5,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 5
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "006479",
+        "name": "广发纳斯达克100ETF联接人民币(QDII)C",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "suspended",
+        "limitAmount": 2,
+        "decisionStatus": "suspended",
+        "decisionLimitAmount": 2
+      }
+    },
+    {
+      "type": "status-changed",
+      "before": {
+        "index": "nasdaq100",
+        "code": "018043",
+        "name": "天弘纳斯达克100指数发起(QDII)A",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "suspended",
+        "limitAmount": null,
+        "decisionStatus": "suspended",
+        "decisionLimitAmount": null
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "018043",
+        "name": "天弘纳斯达克100指数发起(QDII)A",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 100,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 100
+      }
+    },
+    {
+      "type": "status-changed",
+      "before": {
+        "index": "nasdaq100",
+        "code": "018044",
+        "name": "天弘纳斯达克100指数发起(QDII)C",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "suspended",
+        "limitAmount": null,
+        "decisionStatus": "suspended",
+        "decisionLimitAmount": null
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "018044",
+        "name": "天弘纳斯达克100指数发起(QDII)C",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 100,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 100
+      }
+    },
+    {
+      "type": "amount-increased",
+      "before": {
+        "index": "nasdaq100",
+        "code": "018966",
+        "name": "汇添富纳斯达克100ETF发起式联接(QDII)人民币A",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "018966",
+        "name": "汇添富纳斯达克100ETF发起式联接(QDII)人民币A",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 1000,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 1000
+      }
+    },
+    {
+      "type": "amount-increased",
+      "before": {
+        "index": "nasdaq100",
+        "code": "018967",
+        "name": "汇添富纳斯达克100ETF发起式联接(QDII)人民币C",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "018967",
+        "name": "汇添富纳斯达克100ETF发起式联接(QDII)人民币C",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 1000,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 1000
+      }
+    },
+    {
+      "type": "amount-increased",
+      "before": {
+        "index": "nasdaq100",
+        "code": "019441",
+        "name": "万家纳斯达克100指数发起式(QDII)A",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "019441",
+        "name": "万家纳斯达克100指数发起式(QDII)A",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 100,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 100
+      }
+    },
+    {
+      "type": "amount-increased",
+      "before": {
+        "index": "nasdaq100",
+        "code": "019441",
+        "name": "万家纳斯达克100指数发起式(QDII)A",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "019441",
+        "name": "万家纳斯达克100指数发起式(QDII)A",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 100,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 100
+      }
+    },
+    {
+      "type": "amount-increased",
+      "before": {
+        "index": "nasdaq100",
+        "code": "019442",
+        "name": "万家纳斯达克100指数发起式(QDII)C",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "019442",
+        "name": "万家纳斯达克100指数发起式(QDII)C",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 100,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 100
+      }
+    },
+    {
+      "type": "amount-increased",
+      "before": {
+        "index": "nasdaq100",
+        "code": "019442",
+        "name": "万家纳斯达克100指数发起式(QDII)C",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "019442",
+        "name": "万家纳斯达克100指数发起式(QDII)C",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 100,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 100
+      }
+    },
+    {
+      "type": "amount-decreased",
+      "before": {
+        "index": "nasdaq100",
+        "code": "019547",
+        "name": "招商纳斯达克100ETF发起式联接(QDII)A",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 100,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 100
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "019547",
+        "name": "招商纳斯达克100ETF发起式联接(QDII)A",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10
+      }
+    },
+    {
+      "type": "amount-decreased",
+      "before": {
+        "index": "nasdaq100",
+        "code": "019548",
+        "name": "招商纳斯达克100ETF发起式联接(QDII)C",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 100,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 100
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "019548",
+        "name": "招商纳斯达克100ETF发起式联接(QDII)C",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10
+      }
+    },
+    {
+      "type": "amount-increased",
+      "before": {
+        "index": "nasdaq100",
+        "code": "019736",
+        "name": "宝盈纳斯达克100指数发起(QDII)A人民币",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "019736",
+        "name": "宝盈纳斯达克100指数发起(QDII)A人民币",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 200,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 200
+      }
+    },
+    {
+      "type": "amount-increased",
+      "before": {
+        "index": "nasdaq100",
+        "code": "019736",
+        "name": "宝盈纳斯达克100指数发起(QDII)A人民币",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "019736",
+        "name": "宝盈纳斯达克100指数发起(QDII)A人民币",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 200,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 200
+      }
+    },
+    {
+      "type": "amount-increased",
+      "before": {
+        "index": "nasdaq100",
+        "code": "019737",
+        "name": "宝盈纳斯达克100指数发起(QDII)C人民币",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "019737",
+        "name": "宝盈纳斯达克100指数发起(QDII)C人民币",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 200,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 200
+      }
+    },
+    {
+      "type": "amount-increased",
+      "before": {
+        "index": "nasdaq100",
+        "code": "019737",
+        "name": "宝盈纳斯达克100指数发起(QDII)C人民币",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "019737",
+        "name": "宝盈纳斯达克100指数发起(QDII)C人民币",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 200,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 200
+      }
+    },
+    {
+      "type": "amount-increased",
+      "before": {
+        "index": "nasdaq100",
+        "code": "021773",
+        "name": "汇添富纳斯达克100ETF发起式联接(QDII)人民币E",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "021773",
+        "name": "汇添富纳斯达克100ETF发起式联接(QDII)人民币E",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 1000,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 1000
+      }
+    },
+    {
+      "type": "amount-increased",
+      "before": {
+        "index": "nasdaq100",
+        "code": "160213",
+        "name": "国泰纳斯达克100指数",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 50,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 50
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "160213",
+        "name": "国泰纳斯达克100指数",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 100,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 100
+      }
+    },
+    {
+      "type": "status-changed",
+      "before": {
+        "index": "nasdaq100",
+        "code": "270042",
+        "name": "广发纳斯达克100ETF联接人民币(QDII)A",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 5,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 5
+      },
+      "after": {
+        "index": "nasdaq100",
+        "code": "270042",
+        "name": "广发纳斯达克100ETF联接人民币(QDII)A",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "suspended",
+        "limitAmount": 2,
+        "decisionStatus": "suspended",
+        "decisionLimitAmount": 2
+      }
+    },
+    {
+      "type": "status-changed",
+      "before": {
+        "index": "sp500",
+        "code": "007721",
+        "name": "天弘标普500发起(QDII-FOF)A",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "suspended",
+        "limitAmount": null,
+        "decisionStatus": "suspended",
+        "decisionLimitAmount": null
+      },
+      "after": {
+        "index": "sp500",
+        "code": "007721",
+        "name": "天弘标普500发起(QDII-FOF)A",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 100,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 100
+      }
+    },
+    {
+      "type": "status-changed",
+      "before": {
+        "index": "sp500",
+        "code": "007722",
+        "name": "天弘标普500发起(QDII-FOF)C",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "suspended",
+        "limitAmount": null,
+        "decisionStatus": "suspended",
+        "decisionLimitAmount": null
+      },
+      "after": {
+        "index": "sp500",
+        "code": "007722",
+        "name": "天弘标普500发起(QDII-FOF)C",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 100,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 100
+      }
+    },
+    {
+      "type": "amount-increased",
+      "before": {
+        "index": "sp500",
+        "code": "008401",
+        "name": "大成标普500等权重指数(QDII)C人民币",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 100,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 100
+      },
+      "after": {
+        "index": "sp500",
+        "code": "008401",
+        "name": "大成标普500等权重指数(QDII)C人民币",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 1000,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 1000
+      }
+    },
+    {
+      "type": "amount-increased",
+      "before": {
+        "index": "sp500",
+        "code": "008401",
+        "name": "大成标普500等权重指数(QDII)C人民币",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10
+      },
+      "after": {
+        "index": "sp500",
+        "code": "008401",
+        "name": "大成标普500等权重指数(QDII)C人民币",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 100,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 100
+      }
+    },
+    {
+      "type": "amount-increased",
+      "before": {
+        "index": "sp500",
+        "code": "096001",
+        "name": "大成标普500等权重指数(QDII)A人民币",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 100,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 100
+      },
+      "after": {
+        "index": "sp500",
+        "code": "096001",
+        "name": "大成标普500等权重指数(QDII)A人民币",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 1000,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 1000
+      }
+    },
+    {
+      "type": "amount-increased",
+      "before": {
+        "index": "sp500",
+        "code": "096001",
+        "name": "大成标普500等权重指数(QDII)A人民币",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 10,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 10
+      },
+      "after": {
+        "index": "sp500",
+        "code": "096001",
+        "name": "大成标普500等权重指数(QDII)A人民币",
+        "channel": "天天基金公开销售页",
+        "channelBucket": "sales-agency",
+        "channelType": "third-party-public-sales",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 100,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 100
+      }
+    },
+    {
+      "type": "channel-removed",
+      "before": {
+        "index": "nasdaq100",
+        "code": "006479",
+        "name": "广发纳斯达克100ETF联接人民币(QDII)C",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 5,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 5
+      },
+      "after": null
+    },
+    {
+      "type": "channel-removed",
+      "before": {
+        "index": "nasdaq100",
+        "code": "021778",
+        "name": "广发纳指100ETF联接(QDII)人民币F",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 100,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 100
+      },
+      "after": null
+    },
+    {
+      "type": "channel-removed",
+      "before": {
+        "index": "nasdaq100",
+        "code": "270042",
+        "name": "广发纳斯达克100ETF联接人民币(QDII)A",
+        "channel": "基金公司直销",
+        "channelBucket": "fund-manager-direct",
+        "channelType": "official-direct-sale",
+        "currency": "CNY",
+        "route": "otc",
+        "status": "limited",
+        "limitAmount": 5,
+        "decisionStatus": "limited",
+        "decisionLimitAmount": 5
+      },
+      "after": null
+    }
+  ]
 }

@@ -33,15 +33,26 @@ test("index.html 引用静态资源时都带版本号", () => {
   assert.match(indexHtml, /src="\.\/app\.js\?v=[0-9a-f]{8}"/);
 });
 
-test("切换视图的按钮放在数据状态行内", () => {
+test("切换视图和导出图片都放在数据状态行内，按切换、导出的顺序排列", () => {
   const start = indexHtml.indexOf('<section class="status-bar">');
   assert.ok(start >= 0, "index.html 缺少 status-bar 区块");
-  // 状态行里嵌着 #data-status 这个 section，所以按按钮的结束标签取整块，不能按第一个 </section> 截断。
-  const statusBar = indexHtml.slice(start, indexHtml.indexOf("</button>", start));
+  // 状态行里嵌着 #data-status 这个 section 和两个 button，按 </section> 或 </button> 截都会提前断开，
+  // 所以取到下一个区块（表格卡片）开始为止。
+  const statusBar = indexHtml.slice(start, indexHtml.indexOf('<section id="table-card"'));
   assert.match(statusBar, /id="data-status"/);
   assert.match(statusBar, /id="view-toggle"/);
   assert.match(statusBar, /data-view="amount"/);
   assert.match(statusBar, /data-view="fee"/);
+  assert.match(statusBar, /id="export-current"/);
+  assert.ok(
+    statusBar.indexOf('id="export-current"') > statusBar.indexOf('id="view-toggle"'),
+    "导出图片按钮要排在额度 / 费率切换按钮后面"
+  );
+  // 工具栏只留指数筛选，导出按钮不要再回到那里单独占一行。
+  const toolbarStart = indexHtml.indexOf('<section class="toolbar"');
+  assert.ok(toolbarStart >= 0, "index.html 缺少 toolbar 区块");
+  const toolbar = indexHtml.slice(toolbarStart, indexHtml.indexOf("</section>", toolbarStart));
+  assert.doesNotMatch(toolbar, /export-current/);
 });
 
 test("表格骨架由脚本渲染，页面只提供空容器", () => {

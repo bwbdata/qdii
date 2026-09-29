@@ -65,8 +65,8 @@ function buildRows(index) {
       fee: row.fee || null
     };
   });
-  // 费率视图按综合费率从低到高排。同名份额共用一个排序基准，优先取 A 类的费率，
-  // A 类缺失或费率未公示时退回组内费率可得的最高档份额，避免 C 类把整组往后带。
+  // 费率视图按综合费率从高到低排。同名份额共用一个排序基准，优先取 A 类的费率，
+  // A 类缺失或费率未公示时退回组内费率可得的最高档份额，避免 C 类把整组往前带。
   const basisByBase = new Map();
   rows.forEach((row) => {
     const rate = row.fee && Number.isFinite(row.fee.totalAnnualFee) ? row.fee.totalAnnualFee : null;
@@ -80,9 +80,10 @@ function buildRows(index) {
   // 直接比字符串会把同一只基金的份额拆散。分组键相同再按类别（A 优先）和代码定序。
   const byGroupThenClass = (left, right) => left.base.localeCompare(right.base, "zh-CN") || left.classRank - right.classRank || left.code.localeCompare(right.code);
   const amountKey = (row) => (row.salesAmount === null ? -Infinity : row.salesAmount);
-  const feeKey = (row) => (Number.isFinite(row.sortFee) ? row.sortFee : Infinity);
+  // 费率未公示的份额排在最后：降序时用 -Infinity 当键，不会跑到有费率的份额前面。
+  const feeKey = (row) => (Number.isFinite(row.sortFee) ? row.sortFee : -Infinity);
   return rows.sort(view === "fee"
-    ? (left, right) => feeKey(left) - feeKey(right) || byGroupThenClass(left, right)
+    ? (left, right) => feeKey(right) - feeKey(left) || byGroupThenClass(left, right)
     : (left, right) => amountKey(right) - amountKey(left) || byGroupThenClass(left, right));
 }
 
@@ -142,7 +143,7 @@ function applyViewToggle() {
 
 function headCells() {
   const head = view === "fee"
-    ? `<span class="col-fee" title="按综合费率从低到高排序，同名份额以 A 类费率为基准">综合费率</span>`
+    ? `<span class="col-fee" title="按综合费率从高到低排序，同名份额以 A 类费率为基准">综合费率</span>`
     : `<span class="col-amount">代销</span>
     <span class="col-amount">直销</span>`;
   return `<span class="col-fund">基金</span>

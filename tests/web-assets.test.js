@@ -60,3 +60,8 @@ test("表格骨架由脚本渲染，页面只提供空容器", () => {
   assert.match(indexHtml, /<div id="fund-list" class="fund-list"><\/div>/);
   assert.doesNotMatch(indexHtml, /col-fee|col-amount|col-fund|col-code/);
 });
+
+test("页面主标题带 id，脚本才能按视图改写", () => {
+  // 费率视图会把主标题换成「QDII 费率总览」，app.js 靠 #page-title 定位，去掉 id 功能就静默失效。
+  assert.match(indexHtml, /<h1 id="page-title">QDII 申购限额<\/h1>/);
+});

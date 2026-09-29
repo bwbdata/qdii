@@ -60,7 +60,7 @@ const payload = {
 
 function boot() {
   const nodes = {};
-  ["#table-head", "#fund-list", "#data-status", "#table-card", "#updated-at", "#view-toggle", "#export-current", "#empty-hint"]
+  ["#table-head", "#fund-list", "#data-status", "#table-card", "#updated-at", "#view-toggle", "#export-current", "#empty-hint", "#page-title"]
     .forEach((selector) => { nodes[selector] = fakeElement(selector); });
   const labels = [fakeElement("label-amount"), fakeElement("label-fee")];
   labels[0].dataset.view = "amount";
@@ -89,6 +89,7 @@ function boot() {
     // 首屏默认只显示纳斯达克100，先切到「全部」再看完整顺序。
     showAll: () => tabs[2].click(),
     head: () => nodes["#table-head"].innerHTML,
+    title: () => nodes["#page-title"].textContent,
     codes: () => [...nodes["#fund-list"].innerHTML.matchAll(/class="code">(\d+)</g)].map((match) => match[1])
   }));
 }
@@ -110,6 +111,7 @@ test("额度视图仍按额度从高到低排，并列时 A 类在前", async ()
   const app = await boot();
   app.showAll();
   assert.deepEqual(app.codes(), ["000001", "000002", "000003", "000006", "000004", "000005"]);
+  assert.equal(app.title(), "QDII 申购限额");
 });
 
 test("费率视图按综合费率从高到低排，同名份额以 A 类为基准", async () => {
@@ -121,6 +123,7 @@ test("费率视图按综合费率从高到低排，同名份额以 A 类为基�
   // 000004 是 0.5，未公示费率的 000005 排最后。
   assert.deepEqual(app.codes(), ["000006", "000001", "000002", "000003", "000004", "000005"]);
   assert.match(app.head(), /综合费率/);
+  assert.equal(app.title(), "QDII 费率总览");
   // 直接看排序键：已公示费率的基准必须单调不增，未公示的排在最后。
   const basis = JSON.parse(app.run('JSON.stringify(buildRows("all").map((row) => row.sortFee))'));
   const published = basis.filter((value) => value !== null);
@@ -135,6 +138,7 @@ test("切换回额度视图后恢复额度排序", async () => {
   app.toggle.click();
   assert.deepEqual(app.codes(), ["000001", "000002", "000003", "000006", "000004", "000005"]);
   assert.match(app.head(), /代销/);
+  assert.equal(app.title(), "QDII 申购限额");
 });
 
 test("两种视图下同名份额都紧邻且顺序固定为 A、C、I", async () => {

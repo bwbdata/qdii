@@ -23,16 +23,16 @@
         <button id="export-current" class="export-button" type="button">导出图片</button>
       </section>
 
-      <section id="data-status" class="data-status" hidden aria-live="polite"></section>
-
-      <section class="table-card" aria-live="polite">
-        <div class="table-head">
-          <span class="col-fund">基金</span>
-          <span class="col-code">代码</span>
-          <span class="col-fee">综合费率</span>
-          <span class="col-amount">代销</span>
-          <span class="col-amount">直销</span>
+      <section class="status-bar">
+        <section id="data-status" class="data-status" hidden aria-live="polite"></section>
+        <div class="view-switch" role="group" aria-label="表格视图">
+          <button class="view-tab active" data-view="amount" type="button" aria-pressed="true">额度</button>
+          <button class="view-tab" data-view="fee" type="button" aria-pressed="false">费率</button>
         </div>
+      </section>
+
+      <section id="table-card" class="table-card" aria-live="polite">
+        <div id="table-head" class="table-head"></div>
         <div id="fund-list" class="fund-list"></div>
         <p id="empty-hint" class="empty" hidden>当前筛选下暂无数据。</p>
       </section>

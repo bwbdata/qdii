@@ -62,6 +62,31 @@ body {
   cursor: pointer;
 }
 
+.status-bar { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin: 0 0 14px; }
+.status-bar .data-status { flex: 1 1 auto; min-width: 0; margin: 0; }
+
+.view-switch {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 9px;
+  background: #e1eae8;
+}
+.view-tab {
+  min-width: 46px;
+  border: 0;
+  border-radius: 6px;
+  padding: 5px 10px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.view-tab.active { background: #fff; color: var(--ink); font-weight: 700; box-shadow: 0 1px 4px rgba(11, 37, 49, 0.07); }
+
 .data-status {
   display: flex;
   flex-wrap: wrap;
@@ -83,10 +108,12 @@ body {
 }
 .table-head, .fund-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 74px 58px 56px 56px;
+  grid-template-columns: minmax(0, 1fr) 74px 56px 56px;
   align-items: center;
   gap: 1px;
 }
+.table-card.view-fee .table-head,
+.table-card.view-fee .fund-row { grid-template-columns: minmax(0, 1fr) 74px 72px; }
 .table-head {
   padding: 8px 4px;
   background: #f0f6f4;
@@ -147,11 +174,13 @@ footer { margin-top: 16px; color: var(--muted); font-size: 11px; text-align: cen
   font: 14px/1.5 ui-sans-serif, system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 .export-sheet .table-head, .export-sheet .fund-row {
-  grid-template-columns: minmax(0, 1fr) 50px 52px 40px 40px;
+  grid-template-columns: minmax(0, 1fr) 50px 40px 40px;
   column-gap: 0;
   padding-left: 1px;
   padding-right: 1px;
 }
+.export-sheet .table-card.view-fee .table-head,
+.export-sheet .table-card.view-fee .fund-row { grid-template-columns: minmax(0, 1fr) 50px 52px; }
 .export-sheet .table-head { padding-top: 8px; padding-bottom: 8px; }
 .export-sheet .col-code { text-align: left; font-size: 11px; }
 .export-sheet .fund-row { padding-top: 4px; padding-bottom: 4px; }
@@ -164,11 +193,13 @@ footer { margin-top: 16px; color: var(--muted); font-size: 11px; text-align: cen
   .toolbar { margin-bottom: 10px; }
   .tabs { width: 100%; }
   .table-head, .fund-row {
-    grid-template-columns: minmax(0, 1fr) 50px 52px 40px 40px;
+    grid-template-columns: minmax(0, 1fr) 50px 40px 40px;
     column-gap: 0;
     padding-left: 1px;
     padding-right: 1px;
   }
+  .table-card.view-fee .table-head,
+  .table-card.view-fee .fund-row { grid-template-columns: minmax(0, 1fr) 50px 56px; }
   .table-head { padding-top: 8px; padding-bottom: 8px; }
   .col-code { text-align: left; font-size: 11px; }
   .fund-row { padding-top: 4px; padding-bottom: 4px; }

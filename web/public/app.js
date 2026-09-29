@@ -3,6 +3,7 @@ const healthLabels = { ok: "数据完整", partial: "数据部分完整", degrad
 const statusText = { suspended: "暂停", unavailable: "不可", limited: "限购", open: "开放" };
 let payload;
 let selected = "nasdaq100";
+let view = "amount";
 
 const safe = (value) => {
   const element = document.createElement("span");
@@ -55,7 +56,7 @@ function directCell(row) {
   return `<div class="amount limited"><span class="num">${safe(shortAmount(row.directAmount))}</span></div>`;
 }
 
-const rateText = (value) => (Number.isFinite(value) ? `${value}%` : "未公示");
+const rateText = (value) => (Number.isFinite(value) ? `${value.toFixed(2)}%` : "未公示");
 const feeTitle = (fee) => [
   `管理费 ${rateText(fee.managementFee)}`,
   `托管费 ${rateText(fee.custodianFee)}`,
@@ -76,23 +77,37 @@ function rowClass(row) {
 }
 
 function renderRow(row) {
+  const trailing = view === "fee"
+    ? `<div class="col-fee">${feeCell(row)}</div>`
+    : `<div class="col-amount">${salesCell(row)}</div>
+    <div class="col-amount">${directCell(row)}</div>`;
   return `<div class="fund-row${rowClass(row)}">
     <div class="col-fund"><div class="fund-name">${safe(displayName(row.name))}</div></div>
     <div class="col-code"><span class="code">${safe(row.code)}</span></div>
-    <div class="col-fee">${feeCell(row)}</div>
-    <div class="col-amount">${salesCell(row)}</div>
-    <div class="col-amount">${directCell(row)}</div>
+    ${trailing}
   </div>`;
+}
+
+function headCells() {
+  const head = view === "fee"
+    ? `<span class="col-fee">综合费率</span>`
+    : `<span class="col-amount">代销</span>
+    <span class="col-amount">直销</span>`;
+  return `<span class="col-fund">基金</span>
+    <span class="col-code">代码</span>
+    ${head}`;
 }
 
 function render() {
   const rows = buildRows(selected);
+  document.querySelector("#table-head").innerHTML = headCells();
+  document.querySelector("#table-card").classList.toggle("view-fee", view === "fee");
   document.querySelector("#fund-list").innerHTML = rows.map(renderRow).join("");
   document.querySelector("#empty-hint").hidden = rows.length > 0;
 
   const health = payload.health || {};
   const feeRates = payload.feeRates || {};
-  const feeNote = feeRates.errors > 0 ? `<p>${safe(feeRates.errors)} 只基金的运作费率暂未取得，费率一列留空。</p>` : "";
+  const feeNote = view === "fee" && feeRates.errors > 0 ? `<p>${safe(feeRates.errors)} 只基金的运作费率暂未取得，费率一列留空。</p>` : "";
   const statusPanel = document.querySelector("#data-status");
   const time = new Intl.DateTimeFormat("zh-CN", { timeZone: payload.timezone || "Asia/Shanghai", dateStyle: "medium", timeStyle: "short", hourCycle: "h23" }).format(new Date(payload.completedAt));
   document.querySelector("#updated-at").textContent = `更新于 ${time}`;
@@ -131,14 +146,8 @@ async function exportCurrentSelection() {
         <p class="updated-at">更新于 ${time}</p>
       </header>
       <section class="data-status"><strong>${safe(healthLabels[health.status] || "状态未知")}</strong><span>已核验 ${health.checked || 0}/${health.expected || 0}</span></section>
-      <section class="table-card">
-        <div class="table-head">
-          <span class="col-fund">基金</span>
-          <span class="col-code">代码</span>
-          <span class="col-fee">综合费率</span>
-          <span class="col-amount">代销</span>
-          <span class="col-amount">直销</span>
-        </div>
+      <section class="table-card${view === "fee" ? " view-fee" : ""}">
+        <div class="table-head">${headCells()}</div>
         <div class="fund-list">${rows.map(renderRow).join("")}</div>
       </section>
       <footer>仅整理公开申购限制信息，不构成基金推荐或投资建议。</footer>
@@ -149,7 +158,7 @@ async function exportCurrentSelection() {
     }
     await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     const canvas = await htmlToImage.toCanvas(sheet, { pixelRatio: 2, backgroundColor: "#f4f7f6" });
-    downloadCanvas(canvas, `${name}-代销直销.png`);
+    downloadCanvas(canvas, `${name}-${view === "fee" ? "综合费率" : "代销直销"}.png`);
   } catch (error) {
     console.error(error);
     alert(`导出失败：${error.message}`);
@@ -172,6 +181,15 @@ async function start() {
   document.querySelectorAll(".tab").forEach((button) => button.addEventListener("click", () => {
     selected = button.dataset.index;
     document.querySelectorAll(".tab").forEach((item) => item.classList.toggle("active", item === button));
+    render();
+  }));
+  document.querySelectorAll(".view-tab").forEach((button) => button.addEventListener("click", () => {
+    view = button.dataset.view;
+    document.querySelectorAll(".view-tab").forEach((item) => {
+      const active = item === button;
+      item.classList.toggle("active", active);
+      item.setAttribute("aria-pressed", String(active));
+    });
     render();
   }));
   document.querySelector("#export-current").addEventListener("click", exportCurrentSelection);

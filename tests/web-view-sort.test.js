@@ -53,7 +53,7 @@ const payload = {
     { index: "nasdaq100", code: "000003", name: "测试纳指100ETF联接(QDII)人民币I", decisionLimitAmount: 10, fee: fee(0.8, 0.2, 0.1, 1.1) },
     { index: "sp500", code: "000004", name: "便宜标普500指数人民币", decisionLimitAmount: null, fee: fee(0.4, 0.1, 0, 0.5) },
     { index: "sp500", code: "000005", name: "未公示费率标普500指数", decisionLimitAmount: null, fee: null },
-    { index: "sp500", code: "000006", name: "测试标普500指数(QDII-FOF)A", decisionLimitAmount: 5, fee: fee(0.6, 0.2, 0.1, 0.9) }
+    { index: "sp500", code: "000006", name: "测试标普500指数(QDII-FOF)A", decisionLimitAmount: 5, fee: fee(1, 0.2, 0.3, 1.5) }
   ],
   officialChannelEvidence: []
 };
@@ -112,14 +112,20 @@ test("额度视图仍按额度从高到低排，并列时 A 类在前", async ()
   assert.deepEqual(app.codes(), ["000001", "000002", "000003", "000006", "000004", "000005"]);
 });
 
-test("费率视图按综合费率从低到高排，同名份额以 A 类为基准", async () => {
+test("费率视图按综合费率从高到低排，同名份额以 A 类为基准", async () => {
   const app = await boot();
   app.showAll();
   app.toggle.click();
-  // 000004 自身 0.5 最便宜；000006 组基准 0.9；000001/000002/000003 是同一只基金，
-  // 基准取 A 类的 1.0，所以整组跟在一起、不会被 C 类的 1.3 拖到后面；未公示费率的排最后。
-  assert.deepEqual(app.codes(), ["000004", "000006", "000001", "000002", "000003", "000005"]);
+  // 000006 是 1.5，最贵，排第一；000001/000002/000003 是同一只基金，基准取 A 类的 1.0，
+  // 所以 C 类哪怕自身 1.3 也跟着整组排在 1.5 之后，而不是插到前面去；
+  // 000004 是 0.5，未公示费率的 000005 排最后。
+  assert.deepEqual(app.codes(), ["000006", "000001", "000002", "000003", "000004", "000005"]);
   assert.match(app.head(), /综合费率/);
+  // 直接看排序键：已公示费率的基准必须单调不增，未公示的排在最后。
+  const basis = JSON.parse(app.run('JSON.stringify(buildRows("all").map((row) => row.sortFee))'));
+  const published = basis.filter((value) => value !== null);
+  assert.deepEqual(published, [...published].sort((left, right) => right - left));
+  assert.equal(basis[basis.length - 1], null);
 });
 
 test("切换回额度视图后恢复额度排序", async () => {

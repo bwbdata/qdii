@@ -12,7 +12,10 @@ test("web data builder exports only display fields", () => {
   fs.writeFileSync(input, JSON.stringify({
     completedAt: "2026-08-06T01:10:00.000Z", timezone: "Asia/Shanghai",
     health: { status: "ok", checked: 1, expected: 1 },
-    rows: [{ index: "nasdaq100", code: "001", name: "测试基金A", status: "limited", limitAmount: 100, sourceUrl: "https://private.example/token", officialNotice: { url: "https://private.example/pdf" } }],
+    rows: [
+      { index: "nasdaq100", code: "001", name: "测试基金A", status: "limited", limitAmount: 100, sourceUrl: "https://private.example/token", officialNotice: { url: "https://private.example/pdf" }, fee: { managementFee: 0.8, custodianFee: 0.2, serviceFee: 0.3, serviceFeeReported: true, totalAnnualFee: 1.3, sourceUrl: "https://private.example/fee" } },
+      { index: "nasdaq100", code: "002", name: "测试基金B", status: "limited", limitAmount: 50 }
+    ],
     officialChannelEvidence: [{ index: "nasdaq100", code: "001", name: "测试基金A", amount: 200, currency: "CNY", noticeUrl: "https://private.example/pdf" }],
     changes: []
   }));
@@ -21,5 +24,14 @@ test("web data builder exports only display fields", () => {
   const exported = fs.readFileSync(output, "utf8");
   assert.match(exported, /测试基金A/);
   assert.doesNotMatch(exported, /private\.example|sourceUrl|officialNotice|noticeUrl/);
-  assert.equal(JSON.parse(exported).rows[0].decisionLimitAmount, 100);
+  const exportedJson = JSON.parse(exported);
+  assert.equal(exportedJson.rows[0].decisionLimitAmount, 100);
+  assert.deepEqual(exportedJson.rows[0].fee, {
+    managementFee: 0.8,
+    custodianFee: 0.2,
+    serviceFee: 0.3,
+    totalAnnualFee: 1.3,
+    serviceFeeReported: true
+  });
+  assert.equal(exportedJson.rows[1].fee, null);
 });

@@ -1,6 +1,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { buildSnapshot, compareSnapshots, snapshotKey } = require("./core");
+const { collectFeeRates, readFeeCache } = require("./fee-rates");
 const { collectLatestOfficialNotices } = require("./official-notices");
 const { compareOfficialLimit } = require("./official-pdf");
 const { managerSourceForFund } = require("./manager-notices");
@@ -88,6 +89,13 @@ function buildOfficialChannelEvidence(rows, queriedAt, timezone) {
     });
   });
   return evidence;
+}
+
+function withoutFeeRate(row) {
+  if (!row || !row.fee) return row;
+  const copy = Object.assign({}, row);
+  delete copy.fee;
+  return copy;
 }
 
 function applyOfficialDecision(row, officialLimit) {
@@ -226,7 +234,9 @@ async function runQuery(options) {
     historyLimit: 90,
     details: false,
     officialNotices: false,
-    officialNoticeCacheHours: 6
+    officialNoticeCacheHours: 6,
+    feeRates: true,
+    feeCacheHours: 168
   }, options);
   if (!["all", "nasdaq100", "sp500"].includes(settings.index)) throw new Error("--index 只支持 all、nasdaq100 或 sp500");
   if (!settings.outputDir) throw new Error("缺少 outputDir");
@@ -382,6 +392,36 @@ async function runQuery(options) {
     if (officialNotices.unresolvedFundCount) warnings.push(`${officialNotices.unresolvedFundCount} 只基金因公告源临时异常未完成核验。`);
     if (officialNotices.unparsed) warnings.push(`有 ${officialNotices.unparsed} 份官方公告未能可靠提取额度；对应项目明确标记为未知。`);
   }
+  let feeRates = { enabled: false, checked: 0, found: 0, errors: 0 };
+  let pendingFeeCache = null;
+  let pendingFeeCachePath = null;
+  if (settings.feeRates) {
+    const feeCachePath = path.join(settings.outputDir, "fee-rate-cache.json");
+    const feeTargets = [...new Map(rows.map((row) => [row.code, row])).values()];
+    try {
+      const feeCollection = await (settings.feeRateFetcher || collectFeeRates)(feeTargets, {
+        cache: readFeeCache(feeCachePath),
+        cacheHours: settings.feeCacheHours,
+        queriedAt,
+        fetchText: settings.fetchText,
+        retries: settings.retries
+      });
+      rows = rows.map((row) => Object.assign({}, row, { fee: feeCollection.byCode[row.code] || null }));
+      pendingFeeCache = feeCollection.cache;
+      pendingFeeCachePath = feeCachePath;
+      feeRates = {
+        enabled: true,
+        checked: feeCollection.diagnostics.requested,
+        found: feeCollection.diagnostics.resolvedCount,
+        errors: feeCollection.errors.length,
+        cacheHitCount: feeCollection.diagnostics.cacheHitCount,
+        downloadedCount: feeCollection.diagnostics.downloadedCount
+      };
+    } catch (error) {
+      feeRates = { enabled: true, checked: 0, found: 0, errors: 0, failed: true };
+      warnings.push(`费率查询未完成：${error.message}`);
+    }
+  }
   const officialBlockedCodes = new Set(settings.officialNotices
     ? rows.filter((row) => ["open", "limited"].includes(row.status)
       && row.decisionStatus === "unknown"
@@ -433,7 +473,7 @@ async function runQuery(options) {
     limitAmount: row.amount,
     queriedAt: row.queriedAt
   }));
-  const snapshot = buildSnapshot(queriedAt, effectiveRows.concat(directSnapshotRows));
+  const snapshot = buildSnapshot(queriedAt, effectiveRows.concat(directSnapshotRows).map(withoutFeeRate));
   if (health.status !== "ok") warnings.push("数据不完整：本次不更新变化基线，待来源恢复后再比较。");
   const changes = health.status === "ok" ? compareSnapshots(previousSnapshot, snapshot) : [];
   const payload = {
@@ -451,6 +491,7 @@ async function runQuery(options) {
     errors: collected.errors,
     warnings,
     officialNotices,
+    feeRates,
     officialChannelEvidence,
     display: { details: Boolean(settings.details) },
     health,
@@ -461,6 +502,9 @@ async function runQuery(options) {
   }
   if (settings.save && pendingPdfEventCache && pendingPdfEventCachePath) {
     writeAtomic(pendingPdfEventCachePath, `${JSON.stringify(pendingPdfEventCache, null, 2)}\n`);
+  }
+  if (settings.save && pendingFeeCache && pendingFeeCachePath) {
+    writeAtomic(pendingFeeCachePath, `${JSON.stringify(pendingFeeCache, null, 2)}\n`);
   }
   if (settings.save) savePayload(settings.outputDir, scope, payload, snapshot, previousState, settings.historyLimit, health.status === "ok");
   return payload;

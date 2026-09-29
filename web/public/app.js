@@ -21,25 +21,69 @@ const finalStatus = (row) => row.decisionStatus || row.status;
 const finalAmount = (row) => (Number.isFinite(row.decisionLimitAmount) ? row.decisionLimitAmount : row.limitAmount);
 const displayName = (name = "") => String(name).replace(/人民币/g, "").replace(/\(\)|（）/g, "");
 
+// 份额类别靠后的排在后面，用于同名份额之间的固定顺序（A 类优先）。
+const classRank = { A: 0, C: 1, E: 2, I: 3, F: 4, D: 5 };
+
+// 同一只基金的各份额，名称只差结尾的类别字母，个别夹着「人民币」或「(人民币)」。
+// 去掉这些写法差异后作为同名分组键。只认结尾紧跟非拉丁字符的单个大写字母，
+// 免得把「天弘标普500发起(QDII-FOF)」这种以字母结尾的专有名词当成份额类别。
+function shareBase(name = "") {
+  return String(name)
+    .replace(/[（(]\s*人民币\s*[）)]/g, "")
+    .replace(/人民币/g, "")
+    .replace(/[（(]\s*[）)]/g, "")
+    .trim();
+}
+
+function shareClassLetter(name = "") {
+  const match = shareBase(name).match(/[^A-Za-z]([A-Z])$/);
+  return match ? match[1] : "";
+}
+
+function groupKey(name) {
+  return shareClassLetter(name) ? shareBase(name).slice(0, -1) : shareBase(name);
+}
+
 function buildRows(index) {
   const salesRows = payload.rows.filter((row) => index === "all" || row.index === index);
   const directByCode = new Map(payload.officialChannelEvidence.map((entry) => [entry.code, entry]));
-  return salesRows.map((row) => {
+  const rows = salesRows.map((row) => {
     const direct = directByCode.get(row.code);
+    const letter = shareClassLetter(row.name);
+    const amount = finalAmount(row);
     return {
       index: row.index,
       code: row.code,
       name: row.name,
+      base: groupKey(row.name),
+      classRank: letter in classRank ? classRank[letter] : 50,
       status: finalStatus(row),
-      salesAmount: finalAmount(row),
+      // 数据里没有额度时字段可能是 null 也可能是缺失，统一成 null，
+      // 免得 undefined 混进比较器算出 NaN 把排序打乱。
+      salesAmount: Number.isFinite(amount) ? amount : null,
       directAmount: direct && Number.isFinite(direct.amount) ? direct.amount : null,
       fee: row.fee || null
     };
-  }).sort((left, right) => {
-    const leftAmount = left.salesAmount === null ? -Infinity : left.salesAmount;
-    const rightAmount = right.salesAmount === null ? -Infinity : right.salesAmount;
-    return rightAmount - leftAmount || left.name.localeCompare(right.name, "zh-CN");
   });
+  // 费率视图按综合费率从低到高排。同名份额共用一个排序基准，优先取 A 类的费率，
+  // A 类缺失或费率未公示时退回组内费率可得的最高档份额，避免 C 类把整组往后带。
+  const basisByBase = new Map();
+  rows.forEach((row) => {
+    const rate = row.fee && Number.isFinite(row.fee.totalAnnualFee) ? row.fee.totalAnnualFee : null;
+    if (rate === null) return;
+    const current = basisByBase.get(row.base);
+    if (!current || row.classRank < current.classRank) basisByBase.set(row.base, { classRank: row.classRank, rate });
+  });
+  rows.forEach((row) => { row.sortFee = basisByBase.has(row.base) ? basisByBase.get(row.base).rate : null; });
+
+  // 同名份额之间按分组键排序，而不是按原始名称：名称里「人民币」偶尔插在类别字母前面，
+  // 直接比字符串会把同一只基金的份额拆散。分组键相同再按类别（A 优先）和代码定序。
+  const byGroupThenClass = (left, right) => left.base.localeCompare(right.base, "zh-CN") || left.classRank - right.classRank || left.code.localeCompare(right.code);
+  const amountKey = (row) => (row.salesAmount === null ? -Infinity : row.salesAmount);
+  const feeKey = (row) => (Number.isFinite(row.sortFee) ? row.sortFee : Infinity);
+  return rows.sort(view === "fee"
+    ? (left, right) => feeKey(left) - feeKey(right) || byGroupThenClass(left, right)
+    : (left, right) => amountKey(right) - amountKey(left) || byGroupThenClass(left, right));
 }
 
 function salesCell(row) {
@@ -98,7 +142,7 @@ function applyViewToggle() {
 
 function headCells() {
   const head = view === "fee"
-    ? `<span class="col-fee">综合费率</span>`
+    ? `<span class="col-fee" title="按综合费率从低到高排序，同名份额以 A 类费率为基准">综合费率</span>`
     : `<span class="col-amount">代销</span>
     <span class="col-amount">直销</span>`;
   return `<span class="col-fund">基金</span>

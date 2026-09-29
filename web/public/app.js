@@ -133,12 +133,18 @@ function renderRow(row) {
   </div>`;
 }
 
+// 标题跟着视图走：费率视图下页面主标题换成「费率总览」。
+const pageTitles = { amount: "QDII 申购限额", fee: "QDII 费率总览" };
+const titleFor = (target) => pageTitles[target] || pageTitles.amount;
+
 function applyViewToggle() {
   const toggle = document.querySelector("#view-toggle");
   document.querySelectorAll("#view-toggle .view-label").forEach((label) => {
     label.classList.toggle("active", label.dataset.view === view);
   });
   toggle.setAttribute("aria-label", `当前按${view === "fee" ? "综合费率" : "申购额度"}显示，点击切换`);
+  const title = document.querySelector("#page-title");
+  if (title) title.textContent = titleFor(view);
 }
 
 function headCells() {
@@ -196,7 +202,7 @@ async function exportCurrentSelection() {
     sheet.className = "export-sheet";
     sheet.innerHTML = `
       <header class="page-head">
-        <h1>QDII 申购限额</h1>
+        <h1>${safe(titleFor(view))}</h1>
         <p class="updated-at">更新于 ${time}</p>
       </header>
       <section class="data-status"><strong>${safe(healthLabels[health.status] || "状态未知")}</strong><span>已核验 ${health.checked || 0}/${health.expected || 0}</span></section>

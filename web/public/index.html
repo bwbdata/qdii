@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#0d2b3e">
     <title>QDII 申购限额</title>
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./styles.css?v=b2779835">
   </head>
   <body>
     <main class="shell">
@@ -25,10 +25,11 @@
 
       <section class="status-bar">
         <section id="data-status" class="data-status" hidden aria-live="polite"></section>
-        <div class="view-switch" role="group" aria-label="表格视图">
-          <button class="view-tab active" data-view="amount" type="button" aria-pressed="true">额度</button>
-          <button class="view-tab" data-view="fee" type="button" aria-pressed="false">费率</button>
-        </div>
+        <button id="view-toggle" class="view-toggle" type="button" title="点击切换额度 / 费率">
+          <span class="view-label active" data-view="amount">额度</span>
+          <span class="view-sep" aria-hidden="true">/</span>
+          <span class="view-label" data-view="fee">费率</span>
+        </button>
       </section>
 
       <section id="table-card" class="table-card" aria-live="polite">
@@ -40,6 +41,6 @@
       <footer>仅整理公开申购限制信息，不构成基金推荐或投资建议。</footer>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
-    <script src="./app.js"></script>
+    <script src="./app.js?v=ef200ad4"></script>
   </body>
 </html>

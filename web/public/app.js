@@ -88,6 +88,14 @@ function renderRow(row) {
   </div>`;
 }
 
+function applyViewToggle() {
+  const toggle = document.querySelector("#view-toggle");
+  document.querySelectorAll("#view-toggle .view-label").forEach((label) => {
+    label.classList.toggle("active", label.dataset.view === view);
+  });
+  toggle.setAttribute("aria-label", `当前按${view === "fee" ? "综合费率" : "申购额度"}显示，点击切换`);
+}
+
 function headCells() {
   const head = view === "fee"
     ? `<span class="col-fee">综合费率</span>`
@@ -100,6 +108,7 @@ function headCells() {
 
 function render() {
   const rows = buildRows(selected);
+  applyViewToggle();
   document.querySelector("#table-head").innerHTML = headCells();
   document.querySelector("#table-card").classList.toggle("view-fee", view === "fee");
   document.querySelector("#fund-list").innerHTML = rows.map(renderRow).join("");
@@ -183,15 +192,10 @@ async function start() {
     document.querySelectorAll(".tab").forEach((item) => item.classList.toggle("active", item === button));
     render();
   }));
-  document.querySelectorAll(".view-tab").forEach((button) => button.addEventListener("click", () => {
-    view = button.dataset.view;
-    document.querySelectorAll(".view-tab").forEach((item) => {
-      const active = item === button;
-      item.classList.toggle("active", active);
-      item.setAttribute("aria-pressed", String(active));
-    });
+  document.querySelector("#view-toggle").addEventListener("click", () => {
+    view = view === "fee" ? "amount" : "fee";
     render();
-  }));
+  });
   document.querySelector("#export-current").addEventListener("click", exportCurrentSelection);
   render();
 }

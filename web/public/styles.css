@@ -62,30 +62,26 @@ body {
   cursor: pointer;
 }
 
-.status-bar { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin: 0 0 14px; }
+.status-bar { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; }
 .status-bar .data-status { flex: 1 1 auto; min-width: 0; margin: 0; }
 
-.view-switch {
-  display: flex;
+.view-toggle {
   flex: 0 0 auto;
-  gap: 2px;
-  padding: 3px;
-  border-radius: 9px;
-  background: #e1eae8;
-}
-.view-tab {
-  min-width: 46px;
-  border: 0;
-  border-radius: 6px;
-  padding: 5px 10px;
-  background: transparent;
+  margin-left: auto;
+  border: 1px solid #cfe0da;
+  border-radius: 999px;
+  padding: 6px 13px;
+  background: #fff;
   color: var(--muted);
   font: inherit;
   font-size: 12px;
+  line-height: 1.2;
   white-space: nowrap;
   cursor: pointer;
 }
-.view-tab.active { background: #fff; color: var(--ink); font-weight: 700; box-shadow: 0 1px 4px rgba(11, 37, 49, 0.07); }
+.view-toggle .view-label { font-weight: 600; color: var(--muted); }
+.view-toggle .view-label.active { font-weight: 700; color: var(--accent); }
+.view-toggle .view-sep { margin: 0 5px; font-weight: 400; color: #c3d3cd; }
 
 .data-status {
   display: flex;

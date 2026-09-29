@@ -31,7 +31,8 @@ function buildRows(index) {
       name: row.name,
       status: finalStatus(row),
       salesAmount: finalAmount(row),
-      directAmount: direct && Number.isFinite(direct.amount) ? direct.amount : null
+      directAmount: direct && Number.isFinite(direct.amount) ? direct.amount : null,
+      fee: row.fee || null
     };
   }).sort((left, right) => {
     const leftAmount = left.salesAmount === null ? -Infinity : left.salesAmount;
@@ -54,6 +55,20 @@ function directCell(row) {
   return `<div class="amount limited"><span class="num">${safe(shortAmount(row.directAmount))}</span></div>`;
 }
 
+const rateText = (value) => (Number.isFinite(value) ? `${value}%` : "未公示");
+const feeTitle = (fee) => [
+  `管理费 ${rateText(fee.managementFee)}`,
+  `托管费 ${rateText(fee.custodianFee)}`,
+  fee.serviceFeeReported ? `销售服务费 ${rateText(fee.serviceFee)}` : "销售服务费未公示",
+  "每年，已从基金净值中扣除"
+].join("｜");
+
+function feeCell(row) {
+  const fee = row.fee;
+  if (!fee || !Number.isFinite(fee.totalAnnualFee)) return `<div class="fee none">—</div>`;
+  return `<div class="fee" title="${safe(feeTitle(fee))}"><span class="num">${safe(fee.totalAnnualFee.toFixed(2))}%</span></div>`;
+}
+
 function rowClass(row) {
   if (row.status === "unavailable") return " unavailable";
   if (row.status === "suspended") return " paused";
@@ -64,6 +79,7 @@ function renderRow(row) {
   return `<div class="fund-row${rowClass(row)}">
     <div class="col-fund"><div class="fund-name">${safe(displayName(row.name))}</div></div>
     <div class="col-code"><span class="code">${safe(row.code)}</span></div>
+    <div class="col-fee">${feeCell(row)}</div>
     <div class="col-amount">${salesCell(row)}</div>
     <div class="col-amount">${directCell(row)}</div>
   </div>`;
@@ -75,10 +91,12 @@ function render() {
   document.querySelector("#empty-hint").hidden = rows.length > 0;
 
   const health = payload.health || {};
+  const feeRates = payload.feeRates || {};
+  const feeNote = feeRates.errors > 0 ? `<p>${safe(feeRates.errors)} 只基金的运作费率暂未取得，费率一列留空。</p>` : "";
   const statusPanel = document.querySelector("#data-status");
   const time = new Intl.DateTimeFormat("zh-CN", { timeZone: payload.timezone || "Asia/Shanghai", dateStyle: "medium", timeStyle: "short", hourCycle: "h23" }).format(new Date(payload.completedAt));
   document.querySelector("#updated-at").textContent = `更新于 ${time}`;
-  statusPanel.innerHTML = `<strong>${safe(healthLabels[health.status] || "状态未知")}</strong><span>已核验 ${health.checked || 0}/${health.expected || 0}</span>${health.status !== "ok" ? "<p>暂未确认项目不会进入限额清单。</p>" : ""}`;
+  statusPanel.innerHTML = `<strong>${safe(healthLabels[health.status] || "状态未知")}</strong><span>已核验 ${health.checked || 0}/${health.expected || 0}</span>${health.status !== "ok" ? "<p>暂未确认项目不会进入限额清单。</p>" : ""}${feeNote}`;
   statusPanel.hidden = false;
 }
 
@@ -117,6 +135,7 @@ async function exportCurrentSelection() {
         <div class="table-head">
           <span class="col-fund">基金</span>
           <span class="col-code">代码</span>
+          <span class="col-fee">综合费率</span>
           <span class="col-amount">代销</span>
           <span class="col-amount">直销</span>
         </div>

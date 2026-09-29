@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "completedAt": "2026-09-29T08:58:50.367Z",
+  "completedAt": "2026-09-29T09:09:17.795Z",
   "timezone": "Asia/Shanghai",
   "selection": {
     "index": "all",
@@ -26,7 +26,14 @@
       "status": "limited",
       "limitAmount": 10,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 10,
+      "fee": {
+        "managementFee": 0.8,
+        "custodianFee": 0.2,
+        "serviceFee": 0,
+        "totalAnnualFee": 1,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "sp500",
@@ -40,7 +47,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.6,
+        "custodianFee": 0.2,
+        "serviceFee": 0.35,
+        "totalAnnualFee": 1.15,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -54,7 +68,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.8,
+        "custodianFee": 0.2,
+        "serviceFee": 0.2,
+        "totalAnnualFee": 1.2,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "sp500",
@@ -68,7 +89,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.6,
+        "custodianFee": 0.2,
+        "serviceFee": 0,
+        "totalAnnualFee": 0.8,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "sp500",
@@ -82,7 +110,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.6,
+        "custodianFee": 0.2,
+        "serviceFee": 0.25,
+        "totalAnnualFee": 1.05,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "sp500",
@@ -96,7 +131,14 @@
       "status": "limited",
       "limitAmount": 100,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 100
+      "decisionLimitAmount": 100,
+      "fee": {
+        "managementFee": 1,
+        "custodianFee": 0.2,
+        "serviceFee": 0.3,
+        "totalAnnualFee": 1.5,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -110,7 +152,14 @@
       "status": "limited",
       "limitAmount": 10,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 10,
+      "fee": {
+        "managementFee": 0.8,
+        "custodianFee": 0.2,
+        "serviceFee": 0.3,
+        "totalAnnualFee": 1.3,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -124,7 +173,14 @@
       "status": "limited",
       "limitAmount": 10,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 10,
+      "fee": {
+        "managementFee": 0.8,
+        "custodianFee": 0.2,
+        "serviceFee": 0.3,
+        "totalAnnualFee": 1.3,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "sp500",
@@ -138,7 +194,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.8,
+        "custodianFee": 0.2,
+        "serviceFee": 0.35,
+        "totalAnnualFee": 1.35,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -152,7 +215,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.1,
+        "serviceFee": 0.3,
+        "totalAnnualFee": 0.9,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -166,7 +236,14 @@
       "status": "limited",
       "limitAmount": 5,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 5
+      "decisionLimitAmount": 5,
+      "fee": {
+        "managementFee": 0.6,
+        "custodianFee": 0.2,
+        "serviceFee": 0.2,
+        "totalAnnualFee": 1,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -180,7 +257,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.6,
+        "custodianFee": 0.2,
+        "serviceFee": 0,
+        "totalAnnualFee": 0.8,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -194,7 +278,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.6,
+        "custodianFee": 0.2,
+        "serviceFee": 0.3,
+        "totalAnnualFee": 1.1,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -208,7 +299,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.15,
+        "serviceFee": 0,
+        "totalAnnualFee": 0.65,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -222,7 +320,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.15,
+        "serviceFee": 0.3,
+        "totalAnnualFee": 0.95,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -236,7 +341,14 @@
       "status": "limited",
       "limitAmount": 10,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 10,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.15,
+        "serviceFee": 0,
+        "totalAnnualFee": 0.65,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -250,7 +362,14 @@
       "status": "limited",
       "limitAmount": 10,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 10,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.15,
+        "serviceFee": 0.1,
+        "totalAnnualFee": 0.75,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -264,7 +383,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.1,
+        "serviceFee": 0,
+        "totalAnnualFee": 0.6,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -278,7 +404,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.1,
+        "serviceFee": 0.25,
+        "totalAnnualFee": 0.85,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "sp500",
@@ -292,7 +425,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.6,
+        "custodianFee": 0.15,
+        "serviceFee": 0,
+        "totalAnnualFee": 0.75,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "sp500",
@@ -306,7 +446,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.6,
+        "custodianFee": 0.15,
+        "serviceFee": 0.3,
+        "totalAnnualFee": 1.05,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "sp500",
@@ -320,7 +467,14 @@
       "status": "limited",
       "limitAmount": 10,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 10,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.15,
+        "serviceFee": 0,
+        "totalAnnualFee": 0.65,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -334,7 +488,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.1,
+        "serviceFee": 0,
+        "totalAnnualFee": 0.6,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -348,7 +509,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.1,
+        "serviceFee": 0.2,
+        "totalAnnualFee": 0.8,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "sp500",
@@ -362,7 +530,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.6,
+        "custodianFee": 0.15,
+        "serviceFee": 0,
+        "totalAnnualFee": 0.75,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "sp500",
@@ -376,7 +551,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.6,
+        "custodianFee": 0.15,
+        "serviceFee": 0.3,
+        "totalAnnualFee": 1.05,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "sp500",
@@ -390,7 +572,14 @@
       "status": "unavailable",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.6,
+        "custodianFee": 0.2,
+        "serviceFee": 0.01,
+        "totalAnnualFee": 0.81,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -404,7 +593,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.15,
+        "serviceFee": 0,
+        "totalAnnualFee": 0.65,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -418,7 +614,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.15,
+        "serviceFee": 0.4,
+        "totalAnnualFee": 1.05,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -432,7 +635,14 @@
       "status": "limited",
       "limitAmount": 10,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 10,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.1,
+        "serviceFee": 0,
+        "totalAnnualFee": 0.6,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -446,7 +656,14 @@
       "status": "limited",
       "limitAmount": 10,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 10,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.1,
+        "serviceFee": 0.3,
+        "totalAnnualFee": 0.9,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "sp500",
@@ -460,7 +677,14 @@
       "status": "limited",
       "limitAmount": 10,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 10,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.15,
+        "serviceFee": 0.3,
+        "totalAnnualFee": 0.95,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -474,7 +698,14 @@
       "status": "limited",
       "limitAmount": 10,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 10,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.15,
+        "serviceFee": 0,
+        "totalAnnualFee": 0.65,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -488,7 +719,14 @@
       "status": "limited",
       "limitAmount": 10,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 10,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.15,
+        "serviceFee": 0.2,
+        "totalAnnualFee": 0.85,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -502,7 +740,14 @@
       "status": "limited",
       "limitAmount": 5,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 5
+      "decisionLimitAmount": 5,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.15,
+        "serviceFee": 0,
+        "totalAnnualFee": 0.65,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -516,7 +761,14 @@
       "status": "limited",
       "limitAmount": 5,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 5
+      "decisionLimitAmount": 5,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.15,
+        "serviceFee": 0.25,
+        "totalAnnualFee": 0.9,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -530,7 +782,14 @@
       "status": "limited",
       "limitAmount": 10,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 10,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.15,
+        "serviceFee": 0,
+        "totalAnnualFee": 0.65,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -544,7 +803,14 @@
       "status": "limited",
       "limitAmount": 10,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 10,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.15,
+        "serviceFee": 0.4,
+        "totalAnnualFee": 1.05,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -558,7 +824,14 @@
       "status": "limited",
       "limitAmount": 10,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 10,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.15,
+        "serviceFee": 0,
+        "totalAnnualFee": 0.65,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -572,7 +845,14 @@
       "status": "limited",
       "limitAmount": 10,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 10,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.15,
+        "serviceFee": 0.25,
+        "totalAnnualFee": 0.9,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -586,7 +866,14 @@
       "status": "unavailable",
       "limitAmount": null,
       "decisionStatus": "unavailable",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.15,
+        "serviceFee": 0.01,
+        "totalAnnualFee": 0.66,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -600,7 +887,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.15,
+        "serviceFee": 0.1,
+        "totalAnnualFee": 0.75,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -614,7 +908,14 @@
       "status": "unavailable",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.8,
+        "custodianFee": 0.2,
+        "serviceFee": 0.18,
+        "totalAnnualFee": 1.18,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -628,7 +929,14 @@
       "status": "unavailable",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.1,
+        "serviceFee": 0.1,
+        "totalAnnualFee": 0.7,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "sp500",
@@ -642,7 +950,14 @@
       "status": "unavailable",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.6,
+        "custodianFee": 0.2,
+        "serviceFee": 0.25,
+        "totalAnnualFee": 1.05,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -656,7 +971,14 @@
       "status": "unavailable",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.1,
+        "serviceFee": 0.2,
+        "totalAnnualFee": 0.8,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -670,7 +992,14 @@
       "status": "limited",
       "limitAmount": 5,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 5
+      "decisionLimitAmount": 5,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.15,
+        "serviceFee": 0.1,
+        "totalAnnualFee": 0.75,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -684,7 +1013,14 @@
       "status": "limited",
       "limitAmount": 10,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 10,
+      "fee": {
+        "managementFee": 0.8,
+        "custodianFee": 0.2,
+        "serviceFee": 0.3,
+        "totalAnnualFee": 1.3,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -698,7 +1034,14 @@
       "status": "unavailable",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.15,
+        "serviceFee": 0.15,
+        "totalAnnualFee": 0.8,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -712,7 +1055,14 @@
       "status": "limited",
       "limitAmount": 5,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 5
+      "decisionLimitAmount": 5,
+      "fee": {
+        "managementFee": 0.6,
+        "custodianFee": 0.2,
+        "serviceFee": 0,
+        "totalAnnualFee": 0.8,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "sp500",
@@ -726,7 +1076,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.6,
+        "custodianFee": 0.2,
+        "serviceFee": 0,
+        "totalAnnualFee": 0.8,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "sp500",
@@ -740,7 +1097,14 @@
       "status": "limited",
       "limitAmount": 100,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 100
+      "decisionLimitAmount": 100,
+      "fee": {
+        "managementFee": 1,
+        "custodianFee": 0.2,
+        "serviceFee": 0,
+        "totalAnnualFee": 1.2,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -754,7 +1118,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.8,
+        "custodianFee": 0.2,
+        "serviceFee": 0,
+        "totalAnnualFee": 1,
+        "serviceFeeReported": false
+      }
     },
     {
       "index": "sp500",
@@ -768,7 +1139,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.8,
+        "custodianFee": 0.2,
+        "serviceFee": 0,
+        "totalAnnualFee": 1,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -782,7 +1160,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.5,
+        "custodianFee": 0.1,
+        "serviceFee": 0,
+        "totalAnnualFee": 0.6,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -796,7 +1181,14 @@
       "status": "suspended",
       "limitAmount": null,
       "decisionStatus": "suspended",
-      "decisionLimitAmount": null
+      "decisionLimitAmount": null,
+      "fee": {
+        "managementFee": 0.8,
+        "custodianFee": 0.2,
+        "serviceFee": 0,
+        "totalAnnualFee": 1,
+        "serviceFeeReported": true
+      }
     },
     {
       "index": "nasdaq100",
@@ -810,7 +1202,14 @@
       "status": "limited",
       "limitAmount": 10,
       "decisionStatus": "limited",
-      "decisionLimitAmount": 10
+      "decisionLimitAmount": 10,
+      "fee": {
+        "managementFee": 0.8,
+        "custodianFee": 0.2,
+        "serviceFee": 0,
+        "totalAnnualFee": 1,
+        "serviceFeeReported": true
+      }
     }
   ],
   "officialChannelEvidence": [
@@ -963,5 +1362,11 @@
     }
   ],
   "changesEvaluated": true,
+  "feeRates": {
+    "enabled": true,
+    "checked": 57,
+    "found": 57,
+    "errors": 0
+  },
   "changes": []
 }

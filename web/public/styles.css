@@ -83,7 +83,7 @@ body {
 }
 .table-head, .fund-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 74px 56px 56px;
+  grid-template-columns: minmax(0, 1fr) 74px 58px 56px 56px;
   align-items: center;
   gap: 1px;
 }
@@ -94,7 +94,7 @@ body {
   font-size: 12px;
   font-weight: 700;
 }
-.col-amount { text-align: right; }
+.col-amount, .col-fee { text-align: right; }
 .col-code { text-align: center; }
 
 .fund-row {
@@ -128,6 +128,10 @@ body {
 .amount.na { color: var(--danger); }
 .amount.none { color: var(--muted); }
 
+.fee { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fee .num { font-weight: 700; font-size: 13px; color: var(--ink); }
+.fee.none { color: var(--muted); }
+
 .empty { margin: 0; padding: 22px 16px; color: var(--muted); text-align: center; font-size: 13px; }
 
 footer { margin-top: 16px; color: var(--muted); font-size: 11px; text-align: center; }
@@ -143,7 +147,7 @@ footer { margin-top: 16px; color: var(--muted); font-size: 11px; text-align: cen
   font: 14px/1.5 ui-sans-serif, system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 .export-sheet .table-head, .export-sheet .fund-row {
-  grid-template-columns: minmax(0, 1fr) 50px 40px 40px;
+  grid-template-columns: minmax(0, 1fr) 50px 52px 40px 40px;
   column-gap: 0;
   padding-left: 1px;
   padding-right: 1px;
@@ -160,7 +164,7 @@ footer { margin-top: 16px; color: var(--muted); font-size: 11px; text-align: cen
   .toolbar { margin-bottom: 10px; }
   .tabs { width: 100%; }
   .table-head, .fund-row {
-    grid-template-columns: minmax(0, 1fr) 50px 40px 40px;
+    grid-template-columns: minmax(0, 1fr) 50px 52px 40px 40px;
     column-gap: 0;
     padding-left: 1px;
     padding-right: 1px;

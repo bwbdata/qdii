@@ -10,8 +10,9 @@
 2. **不要动 `warnings` 的计数语义**。`query.test.js` 有 `assert.equal(payload.warnings.length, N)` 精确断言；新增可见性提示请走专用字段（如 `feeRates.errors`）。
 3. **`.workbuddy/memory/` 已被 git 跟踪，且会被 `check-release.js` 全文扫描**（只跳过 `.git`/`node_modules`/`outputs`/`coverage` 与 `tests/`）。记忆与文档里禁止出现本机家目录绝对路径（斜杠 + Users 开头）和疑似凭据，一律用仓库相对路径。
 4. **`node scripts/build-web-data.js` 不解析 `--help`**，会直接执行默认构建并覆盖被跟踪的 `web/public/data/latest.json`。查参数请读源码。
-5. H5 用 `fetch` 读同目录 `data/latest.json`，**必须经 HTTP 服务访问**，直接双击 `index.html` 会白屏。
-6. 前端表格的 grid 列宽在**桌面 / ≤520px 媒体查询 / 导出图片 sheet** 三处各有一份，改列必须三处同步；导出 sheet 的选择器要压过 `.table-card.view-fee`，需写到四级。
+5. H5 用 `fetch` 读同目录 `data/latest.json`，**必须经 HTTP 服务访问**，直接双击 `index.html` 会白屏。页面加载异常的经典表现是「表头空白 + 按钮点不动 + 样式没生效」，十有八九是浏览器缓存了旧的 `app.js` / `styles.css`，先怀疑缓存再查代码。
+6. **改了 `web/public/app.js` 或 `styles.css`，必须同步更新 `index.html` 里的 `?v=` 令牌**（值为该文件 sha256 前八位）。`tests/web-assets.test.js` 会断言两者一致，漏更新直接测试失败。
+7. 前端表格的 grid 列宽在**桌面 / ≤520px 媒体查询 / 导出图片 sheet** 三处各有一份，改列必须三处同步；导出 sheet 的选择器要压过 `.table-card.view-fee`，需写到四级。
 
 ## 数据源
 

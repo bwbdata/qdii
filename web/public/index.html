@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#0d2b3e">
     <title>QDII 申购限额</title>
-    <link rel="stylesheet" href="./styles.css?v=b2779835">
+    <link rel="stylesheet" href="./styles.css?v=4029a691">
   </head>
   <body>
     <main class="shell">
@@ -14,13 +14,12 @@
         <p id="updated-at" class="updated-at"></p>
       </header>
 
-      <section class="toolbar" aria-label="指数筛选和数据状态">
+      <section class="toolbar" aria-label="指数筛选">
         <div class="tabs" role="tablist">
           <button class="tab active" data-index="nasdaq100" role="tab">纳斯达克100</button>
           <button class="tab" data-index="sp500" role="tab">标普500</button>
           <button class="tab" data-index="all" role="tab">全部</button>
         </div>
-        <button id="export-current" class="export-button" type="button">导出图片</button>
       </section>
 
       <section class="status-bar">
@@ -30,6 +29,7 @@
           <span class="view-sep" aria-hidden="true">/</span>
           <span class="view-label" data-view="fee">费率</span>
         </button>
+        <button id="export-current" class="export-button" type="button">导出图片</button>
       </section>
 
       <section id="table-card" class="table-card" aria-live="polite">

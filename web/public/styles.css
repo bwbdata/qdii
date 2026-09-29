@@ -51,18 +51,18 @@ body {
 }
 .tab.active { background: #fff; color: var(--ink); font-weight: 700; box-shadow: 0 1px 4px rgba(11, 37, 49, 0.07); }
 .export-button {
-  display: block;
-  margin: 10px auto 0;
+  flex: 0 0 auto;
   border: 1px solid #a7d9ca;
-  border-radius: 9px;
-  padding: 7px 18px;
+  border-radius: 999px;
+  padding: 6px 14px;
   background: var(--accent-soft);
   color: #08785e;
-  font: 600 13px/1.2 inherit;
+  font: 600 12px/1.2 inherit;
+  white-space: nowrap;
   cursor: pointer;
 }
 
-.status-bar { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; }
+.status-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0 0 14px; }
 .status-bar .data-status { flex: 1 1 auto; min-width: 0; margin: 0; }
 
 .view-toggle {
@@ -97,6 +97,9 @@ body {
 }
 .data-status strong { color: var(--accent); }
 .data-status p { width: 100%; margin: 0; }
+/* .data-status 自己的 display:flex 会盖掉 hidden 属性默认的 display:none，
+   数据还没到时状态行里会留一个空壳、把右侧按钮挤歪。这里显式补回来。 */
+.data-status[hidden] { display: none; }
 
 .table-card {
   background: var(--card);
@@ -188,6 +191,8 @@ footer { margin-top: 16px; color: var(--muted); font-size: 11px; text-align: cen
   .page-head { margin-bottom: 10px; }
   .toolbar { margin-bottom: 10px; }
   .tabs { width: 100%; }
+  .status-bar { gap: 6px 8px; }
+  .view-toggle, .export-button { padding-left: 10px; padding-right: 10px; }
   .table-head, .fund-row {
     grid-template-columns: minmax(0, 1fr) 50px 40px 40px;
     column-gap: 0;

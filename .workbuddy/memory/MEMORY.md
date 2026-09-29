@@ -27,6 +27,9 @@
 - 降序排序时未公示值用 `-Infinity` 当键（用 `Infinity` 会翻到最前面）。
 - 组内排序必须用归一化分组键，**不要直接比原始名称**——「人民币」有时插在类别字母前面，会拆散同组份额。
 - 排序前把所有额度/费率归一成数字或 `null`，别让 `undefined` 进比较器（会算出 `NaN` 打乱排序）。
+- **工具按钮一律放在 `.status-bar` 行内**（左「数据完整」状态框、右按钮组，顺序是切换按钮 → 导出按钮，靠 `.view-toggle { margin-left: auto }` 顶到右侧），不要在 `.toolbar` 里另起一行；`.toolbar` 只放指数筛选 tabs。
+- `.data-status` 有 `display:flex`，会盖掉 `hidden` 的默认 `display:none`，所以需要 `.data-status[hidden]{display:none}` 兜底，否则加载前会出现空绿框。
+- 导出图片走 js 新建的 `.export-sheet`（标题 / 状态文字 / 表格 / 页脚，无按钮），改页面按钮布局不会影响导出结果。
 
 ## 协作约定
 

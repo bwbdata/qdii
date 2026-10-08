@@ -29,7 +29,7 @@ function checkRelease(root, options) {
     "package.json", "package-lock.json", ".gitattributes", "agents/openai.yaml", ".github/workflows/test.yml", ".github/dependabot.yml",
     "scripts/query-purchase-limits.js", "scripts/run-scheduled.js", "scripts/lib/official-notices.js",
     "scripts/lib/official-pdf.js", "scripts/lib/announcement-index.js", "scripts/lib/query.js", "scripts/lib/report.js",
-    "scripts/check-git-history.js", "scripts/check-github-releases.js"
+    "scripts/check-git-history.js", "scripts/check-github-releases.js", "scripts/verify-web-data.js"
   ];
   required.forEach((name) => {
     if (!fs.existsSync(path.join(root, name))) errors.push(`缺少文件：${name}`);
@@ -102,6 +102,19 @@ function checkRelease(root, options) {
   if (fs.existsSync(dependabotPath)) {
     const dependabot = readText(dependabotPath);
     if (!/package-ecosystem:\s*npm/.test(dependabot)) errors.push("Dependabot 必须检查 npm 依赖");
+  }
+  // 从极狐同步数据的工作流是线上数据的入口：它拉到的文件会直接发布，
+  // 定时时刻、地址形式或发布前的校验任一被改坏，页面就会静默停留在旧数据上。
+  const jihulabWorkflowPath = path.join(root, ".github", "workflows", "deploy-h5-jihulab.yml");
+  if (fs.existsSync(jihulabWorkflowPath)) {
+    // 只检查非注释行：注释里也提到了 /-/raw/ 这类字样，全文匹配会让断言形同虚设。
+    const jihulabWorkflow = readText(jihulabWorkflowPath);
+    const jihulabCommands = jihulabWorkflow.split("\n").filter((line) => !line.trim().startsWith("#")).join("\n");
+    if (!/cron: "45 1 \* \* \*"/.test(jihulabCommands)) errors.push("同步极狐数据的工作流必须在北京时间 09:45（UTC 01:45）定时运行");
+    if (!/\/-\/raw\//.test(jihulabCommands)) errors.push("同步极狐数据的工作流必须在下载命令里使用 /-/raw/ 地址");
+    if (/\/-\/blob\//.test(jihulabCommands)) errors.push("同步极狐数据的工作流不得使用 /-/blob/ 地址，它返回的是网页而不是文件内容");
+    if (!/node scripts\/verify-web-data\.js/.test(jihulabCommands)) errors.push("同步极狐数据的工作流必须在发布前运行 verify-web-data.js");
+    if (!/actions\/checkout@[0-9a-f]{40} # v7\.0\.0/.test(jihulabCommands)) errors.push("同步极狐数据的工作流必须固定 actions/checkout 到已审核的 v7.0.0 提交");
   }
   const attributesPath = path.join(root, ".gitattributes");
   if (fs.existsSync(attributesPath)) {

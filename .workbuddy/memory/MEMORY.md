@@ -13,12 +13,16 @@
 5. H5 用 `fetch` 读同目录 `data/latest.json`，**必须经 HTTP 服务访问**，直接双击 `index.html` 会白屏。页面加载异常的经典表现是「表头空白 + 按钮点不动 + 样式没生效」，十有八九是浏览器缓存了旧的 `app.js` / `styles.css`，先怀疑缓存再查代码。
 6. **改了 `web/public/app.js` 或 `styles.css`，必须同步更新 `index.html` 里的 `?v=` 令牌**（值为该文件 sha256 前八位）。`tests/web-assets.test.js` 会断言两者一致，漏更新直接测试失败。
 7. 前端表格的 grid 列宽在**桌面 / ≤520px 媒体查询 / 导出图片 sheet** 三处各有一份，改列必须三处同步；导出 sheet 的选择器要压过 `.table-card.view-fee`，需写到四级。
+8. 在 `check-release.js` 里写「必须出现 / 禁止出现 X」这类断言时，**先滤掉 `#` 开头的注释行再匹配**。注释里经常复述同样的字样（如 `/-/raw/`），全文匹配会让守卫形同虚设——`deploy-h5-jihulab.yml` 的地址断言就这么漏过一次，实测才发现。
 
-## 数据源
+## 数据源与发布链路
 
 - 基金目录与销售状态、申购限额：天天基金公开页面；公告走公开公告索引与 PDF。
 - 运作费率：`https://fundf10.eastmoney.com/jjfl_{code}.html` 的「运作费用」表。**反爬坑：连续快速请求返回 HTTP 514**，必须串行 + 间隔 350ms + 重试退避。
 - 综合年化费率 = 管理费率 + 托管费率 + 销售服务费率（每年口径，已从净值扣除），与申购/赎回等一次性费用无关。
+- **H5 数据有两种生成方式，可任选其一**：GitHub Actions 内自抓（`publish-h5.yml`，每天 09:10/14:30/20:30），或极狐 CI 生成后由 `deploy-h5-jihulab.yml` 取回（每天北京时间 09:45 与 main 有提交时）。**两套同时启用会各自提交、各自部署到同一个 Worker，互相覆盖**，只保留一套。
+- 极狐取数地址必须用 `/-/raw/`：`https://jihulab.com/bwbdata1992/qdii/-/raw/main/web/public/data/latest.json`。**`/-/blob/` 返回的是 HTML 网页（200，不是 404），直接落盘会得到一份网页**，只能靠 JSON 解析失败暴露。仓库公开、匿名可读，无需 token。地址可用 Variable `JIHULAB_DATA_URL` 覆盖。
+- 发布前必须过 `scripts/verify-web-data.js`：结构校验 + **`completedAt` 距今超过 36 小时判定失败**。后者针对上游 CI 停掉后 raw 仍返回 200 与最后一次成功结果的场景，否则页面会静默停在旧数据。三个发布工作流共用 `qdii-h5-publish` 并发组。
 
 ## H5 前端约定
 

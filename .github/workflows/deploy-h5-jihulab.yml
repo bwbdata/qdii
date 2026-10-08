@@ -1,0 +1,50 @@
+name: 从极狐同步数据并发布 H5
+
+# 数据的生成已经搬到极狐（jihulab）侧：那边定时查询基金网站、生成
+# web/public/data/latest.json。这个工作流只做两件事——把数据取回来、发布。
+# 它不重新查询基金网站，所以运行时间和外部依赖都远小于「更新并发布 H5」。
+on:
+  schedule:
+    # 北京时间 09:45（UTC 01:45）。排在极狐侧生成数据之后，取到的是当天最新的一份。
+    - cron: "45 1 * * *"
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# 与「更新并发布 H5」「手动发布 H5」共用同一个组：三者的发布目标都是同一个
+# Cloudflare Worker，串行执行可以避免后跑的那个把先跑的覆盖掉。
+concurrency:
+  group: qdii-h5-publish
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: 从极狐仓库拉取最新公开数据
+        env:
+          # 换仓库或改分支时可以在 Variables 里覆盖，不改工作流。
+          JIHULAB_DATA_URL: ${{ vars.JIHULAB_DATA_URL }}
+        run: |
+          set -euo pipefail
+          url="${JIHULAB_DATA_URL:-https://jihulab.com/bwbdata1992/qdii/-/raw/main/web/public/data/latest.json}"
+          echo "数据地址：$url"
+          # 必须用 /-/raw/ 路径：/-/blob/ 返回的是 HTML 页面而不是文件内容。
+          curl -fsSL --retry 3 --retry-delay 5 --retry-all-errors --connect-timeout 20 --max-time 120 \
+            -o web/public/data/latest.json "$url"
+
+      - name: 校验数据文件
+        run: node scripts/verify-web-data.js web/public/data/latest.json
+
+      - name: 发布到 Cloudflare Worker
+        run: npx wrangler@4 deploy --assets web/public --name "$CF_WORKER_NAME" --compatibility-date 2026-08-06
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CF_WORKER_NAME: ${{ vars.CF_WORKER_NAME || secrets.CF_WORKER_NAME }}

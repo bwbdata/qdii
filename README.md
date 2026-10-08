@@ -202,17 +202,32 @@ webhook 地址不应写入仓库、Skill 文件或 LaunchAgent plist。
 
 ## H5 页面与 Cloudflare Workers
 
-无需拆分仓库。`web/public/` 是静态 H5；GitHub Actions 运行现有查询脚本，生成脱敏的 `data/latest.json`，自动提交该 JSON 到仓库，并将页面和数据一起发布到 Cloudflare Worker 静态资源。浏览器不会直接抓取基金网站或公告。
+无需拆分仓库。`web/public/` 是静态 H5；定时任务生成脱敏的 `data/latest.json`，页面和数据一起发布到 Cloudflare Worker 静态资源。浏览器不会直接抓取基金网站或公告。
+
+数据的生成有两种方式，可任选其一，也可以并存：
+
+- 在 GitHub Actions 内运行查询脚本：「更新并发布 H5」生成数据、提交回仓库并发布。
+- 在极狐（jihulab）侧定时生成：仓库外的 CI 产出 `web/public/data/latest.json`（`/-/raw/` 地址可匿名读取），由「从极狐同步数据并发布 H5」取回来发布。该工作流在每天北京时间 09:45、以及 `main` 分支有提交时运行，自身不查询基金网站，因此耗时和外部依赖都远小于前者。数据源地址可用 Variable `JIHULAB_DATA_URL` 覆盖。
+
+两个数据工作流的发布目标相同，共用 `qdii-h5-publish` 并发组以避免互相覆盖。同时启用两套生成方式会各自提交、各自部署，建议只保留一套。
+
+「从极狐同步数据并发布 H5」在发布前运行 `scripts/verify-web-data.js` 校验数据：不是合法 JSON、`rows` 为空、`schemaVersion` 不是 1，或 `completedAt` 距今超过 36 小时，都会让发布失败。最后一条用于防止上游定时任务停掉后，raw 地址继续返回最后一次成功的结果、把陈旧数据静默发上线；阈值可用 `--max-age-hours` 调整。完整度不是 `ok`、部分份额缺少费率只提示不拦截。
 
 首次在 Cloudflare Workers 创建静态资源 Worker（不必连接 Git），然后在 GitHub 仓库 Settings → Secrets and variables → Actions 设置：
 
-https://fund.eastmoney.com/js/- Secret `CLOUDFLARE_API_TOKEN`：在 `My Profile → API Tokens` 创建的用户 Token。权限需要 `Account Settings → Read`、`Workers Scripts → Edit`、`Workers KV Storage → Edit`、`Workers R2 Storage → Edit`、`User Details → Read`、`Memberships → Read`；如该 Worker 使用自定义域名路由，再为对应 Zone 添加 `Workers Routes → Edit`。
+- Secret `CLOUDFLARE_API_TOKEN`：在 `My Profile → API Tokens` 创建的用户 Token。权限需要 `Account Settings → Read`、`Workers Scripts → Edit`、`Workers KV Storage → Edit`、`Workers R2 Storage → Edit`、`User Details → Read`、`Memberships → Read`；如该 Worker 使用自定义域名路由，再为对应 Zone 添加 `Workers Routes → Edit`。
 - Secret `CLOUDFLARE_ACCOUNT_ID`：Cloudflare 账户 ID。
 - Variable `CF_WORKER_NAME`：Worker 名称，例如 `qdii`。也可将同名值保存为 Secret。
 
 之后在 Actions 手动运行一次“更新并发布 H5”。工作流每天北京时间 09:10、14:30、20:30 更新，最长运行 30 分钟。若查询不完整，H5 仍会发布已核验的部分结果，并在页面明确提示数据不完整；暂未确认项目不会进入限额清单。数据无变化时不会创建空提交。
 
 如果已经手动更新并提交了 `web/public/data/latest.json`，可在 Actions 中运行“手动发布 H5”。该工作流只校验 JSON 并发布现有 `web/public/` 到 Worker，不会重新查询或改写数据。
+
+本地校验一份数据文件是否可发布：
+
+```bash
+node scripts/verify-web-data.js web/public/data/latest.json
+```
 
 本地生成页面数据：
 
